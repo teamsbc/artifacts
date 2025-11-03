@@ -1,0 +1,247 @@
+---
+.common:
+  packages:
+    - &packages_core
+      include:
+        - "@core"
+        - "teamsbc-release-standard"
+        - "grubby"
+        - "fwupd-efi"
+        - "libxkbcommon"
+        - "NetworkManager-wifi"
+        - "linux-firmware"
+      exclude:
+        - "sssd*"
+        - "dracut-config-rescue"
+        - "firewalld"
+        - "plymouth"
+
+  platforms:
+    x86_64_uefi_platform: &x86_64_uefi_platform
+      arch: "x86_64"
+      uefi_vendor: "fedora"
+      image_format: "raw"
+      qcow2_compat: "1.1"
+      packages: &x86_64_uefi_platform_packages
+        uefi:
+          - "dracut-config-generic"
+          - "efibootmgr"
+          - "grub2-efi-x64"
+          - "shim-x64"
+      bootloader: "grub2"
+    aarch64_uefi_platform: &aarch64_uefi_platform
+      arch: "aarch64"
+      uefi_vendor: "fedora"
+      image_format: "raw"
+      qcow2_compat: "1.1"
+      packages: &aarch64_uefi_platform_packages
+        uefi:
+          - "dracut-config-generic"
+          - "efibootmgr"
+          - "grub2-efi-aa64"
+          - "grub2-tools"
+          - "shim-aa64"
+      bootloader: "grub2"
+
+  disk_sizes:
+    default_required_partition_sizes: &default_required_dir_sizes
+      "/": "1 GiB"
+
+  partitioning:
+    ids:
+      - &filesystem_linux_dosid "83"
+      - &fat16_bdosid "06"
+    guids:
+      - &efi_system_partition_guid "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
+      - &filesystem_data_guid "0FC63DAF-8483-4772-8E79-3D69D8477DE4"
+      - &xboot_ldr_partition_guid "BC13C2FF-59E6-4262-A352-B275FD6F7172"
+
+    # the invidual partitions for easier composibility
+    partitions:
+      - &default_partition_table_part_efi
+        size: "200 MiB"
+        type: *efi_system_partition_guid
+        payload_type: "filesystem"
+        payload:
+          type: vfat
+          mountpoint: "/boot/efi"
+          label: "ESP"
+          fstab_options: "defaults,uid=0,gid=0,umask=077,shortname=winnt"
+          fstab_freq: 0
+          fstab_passno: 2
+      - &default_partition_table_part_boot
+        size: "512 MiB"
+        type: *filesystem_data_guid
+        payload_type: "filesystem"
+        payload:
+          type: "ext4"
+          mountpoint: "/boot"
+          label: "boot"
+          fstab_options: "defaults"
+          fstab_freq: 0
+          fstab_passno: 0
+      - &default_partition_table_part_root
+        size: "1 GiB"
+        type: *filesystem_data_guid
+        payload_type: "filesystem"
+        payload: &default_partition_table_part_root_payload
+          type: "ext4"
+          label: "root"
+          mountpoint: "/"
+          fstab_options: "defaults"
+          fstab_freq: 0
+          fstab_passno: 0
+
+    virt_partition_tables: &virt_partition_tables
+      x86_64:
+        type: "gpt"
+        partitions:
+          - *default_partition_table_part_efi
+          - *default_partition_table_part_root
+      aarch64: &default_partition_table_aarch64
+        type: "gpt"
+        partitions:
+          - *default_partition_table_part_efi
+          - *default_partition_table_part_root
+
+    minimal_raw_partition_tables: &minimal_raw_partition_tables
+      x86_64:
+        type: "gpt"
+        partitions:
+          - *default_partition_table_part_efi
+          - &minimal_raw_partition_table_part_boot
+            <<: *default_partition_table_part_boot
+            type: *xboot_ldr_partition_guid
+          - &minimal_raw_partition_table_part_root
+            <<: *default_partition_table_part_root
+      aarch64: &minimal_raw_partition_table_aarch64
+        type: "dos"
+        start_offset: "16 MiB"
+        partitions:
+          - <<: *default_partition_table_part_efi
+            bootable: true
+            type: *fat16_bdosid
+          - <<: *minimal_raw_partition_table_part_boot
+            type: *filesystem_linux_dosid
+          - <<: *default_partition_table_part_root
+            type: *filesystem_linux_dosid
+
+  supported_options_lists:
+    # common options supported by all disk image types this includes everything
+    # that is not specific to installers or ostree-based images
+    supported_options_disk: &supported_options_disk
+      - "distro"
+      - "packages"
+      - "modules"
+      - "groups"
+      - "enabled_modules"
+      - "containers"
+      - "minimal"
+      - "customizations.cacerts"
+      - "customizations.directories"
+      - "customizations.disk"
+      - "customizations.files"
+      - "customizations.filesystem"
+      - "customizations.partitioning_mode"
+      - "customizations.fips"
+      - "customizations.firewall"
+      - "customizations.user"
+      - "customizations.sshkey"
+      - "customizations.group"
+      - "customizations.hostname"
+      - "customizations.kernel"
+      - "customizations.locale"
+      - "customizations.openscap"
+      - "customizations.repositories"
+      - "customizations.rpm"
+      - "customizations.services"
+      - "customizations.timezone"
+
+image_config:
+  default:
+    default_oscap_datastream: "/usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml"
+    hostname: "localhost.localdomain"
+    install_weak_deps: false
+    install_langs:
+      - "C"
+    locale: "C.UTF-8"
+    machine_id_uninitialized: true
+    timezone: "UTC"
+    mount_units: true
+    kernel_options:
+      - "rw"
+
+image_types:
+  "standard-generic": &generic
+    filename: "disk.raw.xz"
+    compression: "xz"
+    mime_type: "application/xz"
+    bootable: true
+    default_size: "1 GiB"
+    image_func: "disk"
+    exports: ["xz"]
+    required_partition_sizes: *default_required_dir_sizes
+    platforms:
+      - <<: *aarch64_uefi_platform
+        boot_files:
+          - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
+    image_config:
+      grub2_config:
+        timeout: 5
+      enabled_services:
+        - "NetworkManager.service"
+        - "sshd.service"
+    partition_table:
+      <<: *minimal_raw_partition_tables
+    package_sets:
+      os:
+        - *packages_core
+        #- include:
+            #- "arm-image-installer"
+            #- "bcm283x-firmware"
+            #- "brcmfmac-firmware"
+            #- "iwlwifi-mvm-firmware"
+            #- "realtek-firmware"
+            # Do we want this here?
+            #- "uboot-images-armv8"
+    supported_blueprint_options: *supported_options_disk
+
+  "standard-rpi02w":
+    <<: *generic
+
+  "standard-rpi3":
+    <<: *generic
+
+  "standard-rpi4":
+    <<: *generic
+
+  "standard-rpi5":
+    <<: *generic
+
+  "standard-radxa03w":
+    <<: *generic
+    package_sets:
+      os:
+        - *packages_core
+    platforms:
+      - <<: *aarch64_uefi_platform
+        boot_files: []
+    partition_table:
+      aarch64:
+        type: "gpt"
+        start_offset: "16 MiB"
+        partitions:
+          - <<: *default_partition_table_part_efi
+            type: *efi_system_partition_guid
+          - <<: *minimal_raw_partition_table_part_boot
+            type: *xboot_ldr_partition_guid
+          - <<: *default_partition_table_part_root
+            type: *filesystem_data_guid
+
+  "standard-virt":
+    <<: *generic
+    partition_table: *virt_partition_tables
+    platforms:
+      - <<: *x86_64_uefi_platform
+        image_format: "raw"
+      - <<: *aarch64_uefi_platform
