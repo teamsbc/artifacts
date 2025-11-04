@@ -104,28 +104,6 @@
           - *default_partition_table_part_efi
           - *default_partition_table_part_root
 
-    minimal_raw_partition_tables: &minimal_raw_partition_tables
-      x86_64:
-        type: "gpt"
-        partitions:
-          - *default_partition_table_part_efi
-          - &minimal_raw_partition_table_part_boot
-            <<: *default_partition_table_part_boot
-            type: *xboot_ldr_partition_guid
-          - &minimal_raw_partition_table_part_root
-            <<: *default_partition_table_part_root
-      aarch64: &minimal_raw_partition_table_aarch64
-        type: "dos"
-        start_offset: "16 MiB"
-        partitions:
-          - <<: *default_partition_table_part_efi
-            bootable: true
-            type: *fat16_bdosid
-          - <<: *minimal_raw_partition_table_part_boot
-            type: *filesystem_linux_dosid
-          - <<: *default_partition_table_part_root
-            type: *filesystem_linux_dosid
-
   supported_options_lists:
     # common options supported by all disk image types this includes everything
     # that is not specific to installers or ostree-based images
@@ -172,7 +150,7 @@ image_config:
       - "rw"
 
 image_types:
-  "standard-generic": &generic
+  "standard-virt":
     filename: "disk.raw.xz"
     compression: "xz"
     mime_type: "application/xz"
@@ -181,67 +159,19 @@ image_types:
     image_func: "disk"
     exports: ["xz"]
     required_partition_sizes: *default_required_dir_sizes
-    platforms:
-      - <<: *aarch64_uefi_platform
-        boot_files:
-          - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
     image_config:
       grub2_config:
         timeout: 5
       enabled_services:
         - "NetworkManager.service"
         - "sshd.service"
-    partition_table:
-      <<: *minimal_raw_partition_tables
     package_sets:
       os:
         - *packages_core
-        #- include:
-            #- "arm-image-installer"
-            #- "bcm283x-firmware"
-            #- "brcmfmac-firmware"
-            #- "iwlwifi-mvm-firmware"
-            #- "realtek-firmware"
-            # Do we want this here?
-            #- "uboot-images-armv8"
     supported_blueprint_options: *supported_options_disk
-
-  "standard-rpi02w":
-    <<: *generic
-
-  "standard-rpi3":
-    <<: *generic
-
-  "standard-rpi4":
-    <<: *generic
-
-  "standard-rpi5":
-    <<: *generic
-
-  "standard-radxa03w":
-    <<: *generic
-    package_sets:
-      os:
-        - *packages_core
-    platforms:
-      - <<: *aarch64_uefi_platform
-        boot_files: []
-    partition_table:
-      aarch64:
-        type: "gpt"
-        start_offset: "16 MiB"
-        partitions:
-          - <<: *default_partition_table_part_efi
-            type: *efi_system_partition_guid
-          - <<: *minimal_raw_partition_table_part_boot
-            type: *xboot_ldr_partition_guid
-          - <<: *default_partition_table_part_root
-            type: *filesystem_data_guid
-
-  "standard-virt":
-    <<: *generic
     partition_table: *virt_partition_tables
     platforms:
       - <<: *x86_64_uefi_platform
         image_format: "raw"
       - <<: *aarch64_uefi_platform
+        image_format: "raw"
