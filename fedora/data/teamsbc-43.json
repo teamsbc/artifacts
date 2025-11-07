@@ -16,9 +16,9 @@
       "priority": "10"
     },
     {
-        "name": "teamsbc-base",
-        "baseurl": "https://download.copr.fedorainfracloud.org/results/supakeen/testing-do-not-look/fedora-43-x86_64/",
-        "gpgkey": "-----BEGIN PGP PUBLIC KEY BLOCK-----\n\nmQENBGkHHC8BCAC/iUAsAgDJ25IDoWeGihXHOol9D4Ej/TAYJvWZJkvju1S8IW15\nbvzraYq0/G/7+BBQzJkD9Blx16AjICScTKlD+G6LH7PMvq1+xib6Es88PVcOKseW\nHrHFRh63c7sA/47w3V57rhyk6yGanqFgHPtpZ1y/4V/fWMBSqrB6LyTkNIbL7FaD\ngPOmENpLDmi+6bbaccYLHFYd1LX4yzF1pID3xKsEgvAY6MaILiOAAExdG25+lo0n\nD+XtJYzukQLabvK4XFJ9l6GX1MBNsex8u1WtNXBnLc5sgrd62bfl3cmJQqWmsR2J\n8Fgv6Dsa3MN/TBzB1cE3m3il8szKtEcanD09ABEBAAG0WHN1cGFrZWVuX3Rlc3Rp\nbmctZG8tbm90LWxvb2sgKE5vbmUpIDxzdXBha2VlbiN0ZXN0aW5nLWRvLW5vdC1s\nb29rQGNvcHIuZmVkb3JhaG9zdGVkLm9yZz6JAVgEEwEIAEIWIQTIZB8Pi9lMGcyi\n/iRo3FK1d/T1MQUCaQccLwMbLwQFCQlmAYAFCwkIBwICIgIGFQoJCAsCBBYCAwEC\nHgcCF4AACgkQaNxStXf09TGHUAf+NXXaksM6ot2TqMQT7QavQ4VYE98lFuNHJmdL\nfZghgWdmBK7KF2C45p3T8YtUSATTtUcT4SPaYk6hQAju7/SF4uVmn4EnUw+qzgbU\nMfdOpMHXhdYzxLwDZve9NpVsaS7yg3B3fnx+ImBilb8ifvOGPpAKKVQ9Bzmso4NV\nvYhk7SNETErHiSPE7+8GvV9LnTthHGMnCzWbPhpfIuvnnLJUPjq3t09W9e9LXV1H\nHMlbIMAGksMhNB5myvkGyXYji3pA3tyRFoIm86A1om1QTAN7KZULQAOeaV7qBy8G\n9EUJU8Iz6XzuJXtb9CGK3LvWPz64RoAezrWWp24AYN7Cm5OmYQ==\n=dlSB\n-----END PGP PUBLIC KEY BLOCK-----",
+        "name": "teamsbc-common",
+        "baseurl": "https://download.copr.fedorainfracloud.org/results/@teamsbc/fedora-common/fedora-43-x86_64/",
+        "gpgkey": "-----BEGIN PGP PUBLIC KEY BLOCK-----\n\nmQENBGkNi94BCACqf54+FUuvBlXGtMsIamyAj7ALAPwYgTDCglY7g6fXLYO8VI/K\n7bSkdaS8/3iewRyzK19TcXX7jI2FXFKkDDZw3MU7Fzajp1/PP+SGA9lcBFWMsGTH\nTPBa285QjlLlbfLpFcR5Q+IFgSHkEwhg97hBWRM5h5pZcXQokyjyc0+QyDu4By4s\nCX076umOJGe85zDJf4uvEJcX4Ld07hllxuUQv/6tm1TRyKZjbkbs0qwLbU6KRNsm\nz0ept0SsMFegbon0AaXhEoMCLMc5o7Kl4Fld7IO0qBeEA+X+YZDQgBp/avWeHEKY\nzlc36s1UcKgHedmqB0dTFxVKSiaelyeAcj+1ABEBAAG0TEB0ZWFtc2JjX2ZlZG9y\nYS1jb21tb24gKE5vbmUpIDxAdGVhbXNiYyNmZWRvcmEtY29tbW9uQGNvcHIuZmVk\nb3JhaG9zdGVkLm9yZz6JAVgEEwEIAEIWIQRZvkAgOwDCx99OYAVhMYZuwXAm/QUC\naQ2L3gMbLwQFCQlmAYAFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQYTGG\nbsFwJv3WiQf/QIupj2G1yAkXKnUnCpciHpNIDOYynETXjQNs/9y811NNQu2lpQD3\n5eE2CISe34xs42iM85NAzG92Qrp6nLLcFoD5l0uipYS9ZSOPFBDpubB1JMAxd+24\nM6fcWbC37Lo85wAoTcVMDrWu/VelCDg6Rvn2ag8BeJ5JREjxAXUSGMZjNXjbFysE\nd9j/bKQKJH59EAJb6GJtb3fZF5GfqBuLa4aM4ny5dGuhnB39HIenWMHB9FYpbveX\nbCSgccEH4Nb7H5f+zHcn85iRewdXoqF1F202CoJ/WzOMztu+vvMVIx/vLI/yamWG\nv/V7cWm7pJhWnye+aAwrj73wnDSmdmOHcA==\n=aZ7v\n-----END PGP PUBLIC KEY BLOCK-----",
         "check_gpg": true,
       "priority": "1"
     }
@@ -38,9 +38,9 @@
       "check_gpg": true
     },
     {
-        "name": "teamsbc-base",
-        "baseurl": "https://download.copr.fedorainfracloud.org/results/supakeen/testing-do-not-look/fedora-43-aarch64/",
-        "gpgkey": "-----BEGIN PGP PUBLIC KEY BLOCK-----\n\nmQENBGkHHC8BCAC/iUAsAgDJ25IDoWeGihXHOol9D4Ej/TAYJvWZJkvju1S8IW15\nbvzraYq0/G/7+BBQzJkD9Blx16AjICScTKlD+G6LH7PMvq1+xib6Es88PVcOKseW\nHrHFRh63c7sA/47w3V57rhyk6yGanqFgHPtpZ1y/4V/fWMBSqrB6LyTkNIbL7FaD\ngPOmENpLDmi+6bbaccYLHFYd1LX4yzF1pID3xKsEgvAY6MaILiOAAExdG25+lo0n\nD+XtJYzukQLabvK4XFJ9l6GX1MBNsex8u1WtNXBnLc5sgrd62bfl3cmJQqWmsR2J\n8Fgv6Dsa3MN/TBzB1cE3m3il8szKtEcanD09ABEBAAG0WHN1cGFrZWVuX3Rlc3Rp\nbmctZG8tbm90LWxvb2sgKE5vbmUpIDxzdXBha2VlbiN0ZXN0aW5nLWRvLW5vdC1s\nb29rQGNvcHIuZmVkb3JhaG9zdGVkLm9yZz6JAVgEEwEIAEIWIQTIZB8Pi9lMGcyi\n/iRo3FK1d/T1MQUCaQccLwMbLwQFCQlmAYAFCwkIBwICIgIGFQoJCAsCBBYCAwEC\nHgcCF4AACgkQaNxStXf09TGHUAf+NXXaksM6ot2TqMQT7QavQ4VYE98lFuNHJmdL\nfZghgWdmBK7KF2C45p3T8YtUSATTtUcT4SPaYk6hQAju7/SF4uVmn4EnUw+qzgbU\nMfdOpMHXhdYzxLwDZve9NpVsaS7yg3B3fnx+ImBilb8ifvOGPpAKKVQ9Bzmso4NV\nvYhk7SNETErHiSPE7+8GvV9LnTthHGMnCzWbPhpfIuvnnLJUPjq3t09W9e9LXV1H\nHMlbIMAGksMhNB5myvkGyXYji3pA3tyRFoIm86A1om1QTAN7KZULQAOeaV7qBy8G\n9EUJU8Iz6XzuJXtb9CGK3LvWPz64RoAezrWWp24AYN7Cm5OmYQ==\n=dlSB\n-----END PGP PUBLIC KEY BLOCK-----",
+        "name": "teamsbc-common",
+        "baseurl": "https://download.copr.fedorainfracloud.org/results/@teamsbc/fedora-common/fedora-43-aarch64/",
+        "gpgkey": "-----BEGIN PGP PUBLIC KEY BLOCK-----\n\nmQENBGkNi94BCACqf54+FUuvBlXGtMsIamyAj7ALAPwYgTDCglY7g6fXLYO8VI/K\n7bSkdaS8/3iewRyzK19TcXX7jI2FXFKkDDZw3MU7Fzajp1/PP+SGA9lcBFWMsGTH\nTPBa285QjlLlbfLpFcR5Q+IFgSHkEwhg97hBWRM5h5pZcXQokyjyc0+QyDu4By4s\nCX076umOJGe85zDJf4uvEJcX4Ld07hllxuUQv/6tm1TRyKZjbkbs0qwLbU6KRNsm\nz0ept0SsMFegbon0AaXhEoMCLMc5o7Kl4Fld7IO0qBeEA+X+YZDQgBp/avWeHEKY\nzlc36s1UcKgHedmqB0dTFxVKSiaelyeAcj+1ABEBAAG0TEB0ZWFtc2JjX2ZlZG9y\nYS1jb21tb24gKE5vbmUpIDxAdGVhbXNiYyNmZWRvcmEtY29tbW9uQGNvcHIuZmVk\nb3JhaG9zdGVkLm9yZz6JAVgEEwEIAEIWIQRZvkAgOwDCx99OYAVhMYZuwXAm/QUC\naQ2L3gMbLwQFCQlmAYAFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQYTGG\nbsFwJv3WiQf/QIupj2G1yAkXKnUnCpciHpNIDOYynETXjQNs/9y811NNQu2lpQD3\n5eE2CISe34xs42iM85NAzG92Qrp6nLLcFoD5l0uipYS9ZSOPFBDpubB1JMAxd+24\nM6fcWbC37Lo85wAoTcVMDrWu/VelCDg6Rvn2ag8BeJ5JREjxAXUSGMZjNXjbFysE\nd9j/bKQKJH59EAJb6GJtb3fZF5GfqBuLa4aM4ny5dGuhnB39HIenWMHB9FYpbveX\nbCSgccEH4Nb7H5f+zHcn85iRewdXoqF1F202CoJ/WzOMztu+vvMVIx/vLI/yamWG\nv/V7cWm7pJhWnye+aAwrj73wnDSmdmOHcA==\n=aZ7v\n-----END PGP PUBLIC KEY BLOCK-----",
         "check_gpg": true
     }
   ]
