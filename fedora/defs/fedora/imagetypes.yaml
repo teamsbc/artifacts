@@ -148,6 +148,8 @@ image_config:
     mount_units: true
     kernel_options:
       - "rw"
+    default_kernel: "kernel-core"
+    update_default_kernel: true
 
 image_types:
   "standard-virt":
