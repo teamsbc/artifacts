@@ -144,7 +144,6 @@ image_config:
       - "C"
     locale: "C.UTF-8"
     machine_id_uninitialized: true
-    timezone: "UTC"
     mount_units: true
     kernel_options:
       - "rw"
