@@ -17,12 +17,3 @@ make build DISTRO=44 TYPE=standard-virt
 ```
 
 Will build a TeamSBC Remix, Fedora 44 based `standard-virt` artifact.
-
-
-### Compose
-
-```
-make compose
-```
-
-Will build all TeamSBC Remix artifacts for the host architecture and a given version. Puts them in a directory called `compose-` with the current date (in UTC) appended. Builds include their manifest and build log as additional data.
