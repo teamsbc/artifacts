@@ -104,37 +104,6 @@
           - *default_partition_table_part_efi
           - *default_partition_table_part_root
 
-  supported_options_lists:
-    # common options supported by all disk image types this includes everything
-    # that is not specific to installers or ostree-based images
-    supported_options_disk: &supported_options_disk
-      - "distro"
-      - "packages"
-      - "modules"
-      - "groups"
-      - "enabled_modules"
-      - "containers"
-      - "minimal"
-      - "customizations.cacerts"
-      - "customizations.directories"
-      - "customizations.disk"
-      - "customizations.files"
-      - "customizations.filesystem"
-      - "customizations.partitioning_mode"
-      - "customizations.fips"
-      - "customizations.firewall"
-      - "customizations.user"
-      - "customizations.sshkey"
-      - "customizations.group"
-      - "customizations.hostname"
-      - "customizations.kernel"
-      - "customizations.locale"
-      - "customizations.openscap"
-      - "customizations.repositories"
-      - "customizations.rpm"
-      - "customizations.services"
-      - "customizations.timezone"
-
 image_config:
   default:
     default_oscap_datastream: "/usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml"
@@ -169,7 +138,6 @@ image_types:
     package_sets:
       os:
         - *packages_core
-    supported_blueprint_options: *supported_options_disk
     partition_table: *virt_partition_tables
     platforms:
       - <<: *x86_64_uefi_platform
