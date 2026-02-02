@@ -10,7 +10,10 @@ DATA := $(PWD)/fedora/data
 
 .PHONY: build
 build:
-	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamldir=$(DEFS) image-builder --force-data-dir=$(DATA) build --distro teamsbc-$(VERSION) $(TYPE)
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamldir=$(DEFS) image-builder \
+		--force-data-dir=$(DATA) \
+		build \
+		--distro teamsbc-$(VERSION) $(TYPE)
 
 .PHONY: compose-dir
 compose-dir:
@@ -24,4 +27,11 @@ compose-dir:
 .PHONY: compose
 compose: compose-dir
 	@if [ -z "$(LAST)" ]; then echo "no path found!"; exit 1; fi
-	@(cd $(LAST) && sudo IMAGE_BUILDER_EXPERIMENTAL=yamldir=$(DEFS) image-builder --force-data-dir=$(DATA) build --seed=$(DATE) --with-buildlog --with-manifest --distro teamsbc-$(VERSION) standard-virt)
+	@(cd $(LAST) && sudo IMAGE_BUILDER_EXPERIMENTAL=yamldir=$(DEFS) image-builder \
+		--force-data-dir=$(DATA) \
+		build \
+		--seed=$(DATE) \
+		--with-buildlog \
+		--with-manifest \
+		--distro teamsbc-$(VERSION) standard-virt \
+	)
