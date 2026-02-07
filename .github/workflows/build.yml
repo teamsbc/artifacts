@@ -1,0 +1,70 @@
+name: Build Artifacts
+
+on:
+  push:
+    paths:
+      - data/**
+      - .github/workflows/build.yml
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-artifacts:
+    strategy:
+      matrix:
+        build:
+          - distro: fedora
+            version: 44
+            arch: x86_64
+            runner: ubuntu-latest
+            type: standard-virt
+          - distro: fedora
+            version: 44
+            arch: aarch64
+            runner: ubuntu-24.04-arm
+            type: standard-virt
+          - distro: fedora
+            version: 45
+            arch: x86_64
+            runner: ubuntu-latest
+            type: standard-virt
+          - distro: fedora
+            version: 45
+            arch: aarch64
+            runner: ubuntu-24.04-arm
+            type: standard-virt
+    runs-on: ${{ matrix.build.runner }}
+    steps:
+      - name: "Checkout Code"
+        uses: actions/checkout@v6
+      - name: "Setup"
+        env:
+          REPO: /artifacts/${{ github.ref_name }}/latest/${{ matrix.build.version }}/${{ matrix.build.arch }}/
+        run: |
+          sudo mkdir -p $REPO/
+      - name: "Build"
+        env:
+          REPO: /artifacts/${{ github.ref_name }}/latest/${{ matrix.build.version }}/${{ matrix.build.arch }}/
+        run: |
+          sudo podman run --rm --privileged \
+          -v $REPO:/output:Z \
+          -v ./data:/data:Z \
+          -e IMAGE_BUILDER_EXPERIMENTAL=yamldir=/data/defs \
+          ghcr.io/osbuild/image-builder-cli:latest \
+            --progress=verbose \
+            --force-repo-dir=/data/repo \
+            build \
+            --output-dir /output \
+            --distro teamsbc-${{ matrix.build.version }} \
+            ${{ matrix.build.type }}
+          ls -larth $REPO/
+      - name: "Upload"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp --recursive /artifacts \
+            "s3://teamsbc-artifacts/" \
+            --endpoint-url ${{ secrets.R2_ENDPOINT }} \
+            --no-progress
