@@ -57,6 +57,7 @@ jobs:
             build \
             --output-dir /output \
             --distro teamsbc-${{ matrix.build.version }} \
+            --with-manifest \
             ${{ matrix.build.type }}
           ls -larth $REPO/
       - name: "Upload"
