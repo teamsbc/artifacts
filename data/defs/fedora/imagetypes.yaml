@@ -15,7 +15,7 @@
         - "dracut-config-rescue"
         - "firewalld"
         - "plymouth"
-    - &packages_rpi4
+    - &packages_rpi
       include:
         - "bcm283x-firmware"
         - "brcmfmac-firmware"
@@ -57,8 +57,8 @@
 
   partitioning:
     mbr_ids:
-      - &filesystem_linux_dosid "83"
-      - &fat16_bdosid "06"
+      - &dos_linux_filesystem "83"
+      - &dos_fat16 "06"
     gpt_guids:
       - &gpt_efi_system_partition "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
       - &gpt_generic_linux_data "0FC63DAF-8483-4772-8E79-3D69D8477DE4"
@@ -105,6 +105,31 @@
           - <<: *default_root_partition
             type: *gpt_aarch64_root
 
+    rpi3_partition_tables: &rpi3_partition_tables
+      aarch64:
+        type: "dos"
+        partitions:
+          - size: "200 MiB"
+            type: *dos_fat16
+            payload_type: "filesystem"
+            payload:
+              type: "vfat"
+              mountpoint: "/boot/efi"
+              label: "ESP"
+              fstab_options: "defaults,uid=0,gid=0,umask=077,shortname=winnt"
+              fstab_freq: 0
+              fstab_passno: 2
+          - size: "6 GiB"
+            type: *dos_linux_filesystem
+            payload_type: "filesystem"
+            payload: &default_partition_table_part_root_payload
+              type: "ext4"
+              label: "root"
+              mountpoint: "/"
+              fstab_options: "defaults"
+              fstab_freq: 0
+              fstab_passno: 0
+
     rpi4_partition_tables: &rpi4_partition_tables
       aarch64: *default_partition_table_aarch64
 
@@ -149,6 +174,32 @@ image_types:
       - <<: *aarch64_uefi_platform
         image_format: "raw"
 
+  "standard-rpi3":
+    filename: "disk.raw.xz"
+    compression: "xz"
+    mime_type: "application/xz"
+    bootable: true
+    default_size: "1 GiB"
+    image_func: "disk"
+    exports: ["xz"]
+    required_partition_sizes: *default_required_dir_sizes
+    image_config:
+      grub2_config:
+        timeout: 5
+      enabled_services:
+        - "NetworkManager.service"
+        - "sshd.service"
+    package_sets:
+      os:
+        - *packages_core
+        - *packages_rpi
+    partition_table: *rpi3_partition_tables
+    platforms:
+      - <<: *aarch64_uefi_platform
+        image_format: "raw"
+        boot_files:
+          - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
+
   "standard-rpi4":
     filename: "disk.raw.xz"
     compression: "xz"
@@ -167,7 +218,7 @@ image_types:
     package_sets:
       os:
         - *packages_core
-        - *packages_rpi4
+        - *packages_rpi
     partition_table: *rpi4_partition_tables
     platforms:
       - <<: *aarch64_uefi_platform
