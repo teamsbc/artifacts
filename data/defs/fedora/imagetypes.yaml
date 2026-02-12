@@ -95,7 +95,7 @@
         partitions:
           - *default_efi_partition
           - <<: *default_root_partition
-            type: &gpt_aarch64_root
+            type: *gpt_aarch64_root
 
 image_config:
   default:
