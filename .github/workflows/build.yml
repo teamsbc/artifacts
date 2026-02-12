@@ -25,6 +25,11 @@ jobs:
             runner: ubuntu-24.04-arm
             type: standard-virt
           - distro: fedora
+            version: 44
+            arch: aarch64
+            runner: ubuntu-24.04-arm
+            type: standard-rpi4
+          - distro: fedora
             version: 45
             arch: x86_64
             runner: ubuntu-latest
@@ -34,6 +39,11 @@ jobs:
             arch: aarch64
             runner: ubuntu-24.04-arm
             type: standard-virt
+          - distro: fedora
+            version: 45
+            arch: aarch64
+            runner: ubuntu-24.04-arm
+            type: standard-rpi4
     runs-on: ${{ matrix.build.runner }}
     steps:
       - name: "Checkout Code"

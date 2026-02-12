@@ -15,6 +15,14 @@
         - "dracut-config-rescue"
         - "firewalld"
         - "plymouth"
+    - &packages_rpi4
+      include:
+        - "bcm283x-firmware"
+        - "brcmfmac-firmware"
+        # we'd really like this to be only in the build pipeline as it
+        # bloats the size of the image quite a bit; needs some upstream
+        # work to achieve that
+        - "uboot-images-armv8"
 
   platforms:
     x86_64_uefi_platform: &x86_64_uefi_platform
@@ -97,6 +105,9 @@
           - <<: *default_root_partition
             type: *gpt_aarch64_root
 
+    rpi4_partition_tables: &rpi4_partition_tables
+      aarch64: *default_partition_table_aarch64
+
 image_config:
   default:
     default_oscap_datastream: "/usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml"
@@ -137,3 +148,29 @@ image_types:
         image_format: "raw"
       - <<: *aarch64_uefi_platform
         image_format: "raw"
+
+  "standard-rpi4":
+    filename: "disk.raw.xz"
+    compression: "xz"
+    mime_type: "application/xz"
+    bootable: true
+    default_size: "1 GiB"
+    image_func: "disk"
+    exports: ["xz"]
+    required_partition_sizes: *default_required_dir_sizes
+    image_config:
+      grub2_config:
+        timeout: 5
+      enabled_services:
+        - "NetworkManager.service"
+        - "sshd.service"
+    package_sets:
+      os:
+        - *packages_core
+        - *packages_rpi4
+    partition_table: *rpi4_partition_tables
+    platforms:
+      - <<: *aarch64_uefi_platform
+        image_format: "raw"
+        boot_files:
+          - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
