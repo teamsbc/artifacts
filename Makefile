@@ -10,3 +10,9 @@ build:
 		--force-data-dir=$(REPO) \
 		build \
 		--distro teamsbc-$(VERSION) $(TYPE)
+
+.PHONY: list
+list:
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamldir=$(DEFS) image-builder \
+		--force-data-dir=$(REPO) \
+		list
