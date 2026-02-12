@@ -105,7 +105,7 @@
           - <<: *default_root_partition
             type: *gpt_aarch64_root
 
-    rpi3_partition_tables: &rpi3_partition_tables
+    rpi3_rpi02w_partition_tables: &rpi3_rpi02w_partition_tables
       aarch64:
         type: "dos"
         partitions:
@@ -174,6 +174,32 @@ image_types:
       - <<: *aarch64_uefi_platform
         image_format: "raw"
 
+  "standard-rpi02w":
+    filename: "disk.raw.xz"
+    compression: "xz"
+    mime_type: "application/xz"
+    bootable: true
+    default_size: "1 GiB"
+    image_func: "disk"
+    exports: ["xz"]
+    required_partition_sizes: *default_required_dir_sizes
+    image_config:
+      grub2_config:
+        timeout: 5
+      enabled_services:
+        - "NetworkManager.service"
+        - "sshd.service"
+    package_sets:
+      os:
+        - *packages_core
+        - *packages_rpi
+    partition_table: *rpi3_rpi02w_partition_tables
+    platforms:
+      - <<: *aarch64_uefi_platform
+        image_format: "raw"
+        boot_files:
+          - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
+
   "standard-rpi3":
     filename: "disk.raw.xz"
     compression: "xz"
@@ -193,7 +219,7 @@ image_types:
       os:
         - *packages_core
         - *packages_rpi
-    partition_table: *rpi3_partition_tables
+    partition_table: *rpi3_rpi02w_partition_tables
     platforms:
       - <<: *aarch64_uefi_platform
         image_format: "raw"
