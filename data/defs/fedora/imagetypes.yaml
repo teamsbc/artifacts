@@ -45,22 +45,24 @@
 
   disk_sizes:
     default_required_partition_sizes: &default_required_dir_sizes
-      "/": "1 GiB"
+      "/": "2 GiB"
 
   partitioning:
-    ids:
+    mbr_ids:
       - &filesystem_linux_dosid "83"
       - &fat16_bdosid "06"
-    guids:
-      - &efi_system_partition_guid "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
-      - &filesystem_data_guid "0FC63DAF-8483-4772-8E79-3D69D8477DE4"
-      - &xboot_ldr_partition_guid "BC13C2FF-59E6-4262-A352-B275FD6F7172"
+    gpt_guids:
+      - &gpt_efi_system_partition "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
+      - &gpt_generic_linux_data "0FC63DAF-8483-4772-8E79-3D69D8477DE4"
+      - &gpt_aarch64_root "b921b045-1df0-41c3-af44-4c6f280d3fae"
+      - &gpt_x86_64_root "4f68bce3-e8cd-4db1-96e7-fbcaf984b709"
 
-    # the invidual partitions for easier composibility
-    partitions:
-      - &default_partition_table_part_efi
+    # default invidual partitions for easier composibility in the partition
+    # tables below
+    partition_defaults:
+      - &default_efi_partition
         size: "200 MiB"
-        type: *efi_system_partition_guid
+        type: *gpt_efi_system_partition
         payload_type: "filesystem"
         payload:
           type: vfat
@@ -69,20 +71,9 @@
           fstab_options: "defaults,uid=0,gid=0,umask=077,shortname=winnt"
           fstab_freq: 0
           fstab_passno: 2
-      - &default_partition_table_part_boot
-        size: "512 MiB"
-        type: *filesystem_data_guid
-        payload_type: "filesystem"
-        payload:
-          type: "ext4"
-          mountpoint: "/boot"
-          label: "boot"
-          fstab_options: "defaults"
-          fstab_freq: 0
-          fstab_passno: 0
-      - &default_partition_table_part_root
-        size: "1 GiB"
-        type: *filesystem_data_guid
+      - &default_root_partition
+        size: "6 GiB"
+        type: *gpt_generic_linux_data
         payload_type: "filesystem"
         payload: &default_partition_table_part_root_payload
           type: "ext4"
@@ -96,13 +87,15 @@
       x86_64:
         type: "gpt"
         partitions:
-          - *default_partition_table_part_efi
-          - *default_partition_table_part_root
+          - *default_efi_partition
+          - <<: *default_root_partition
+            type: *gpt_x86_64_root
       aarch64: &default_partition_table_aarch64
         type: "gpt"
         partitions:
-          - *default_partition_table_part_efi
-          - *default_partition_table_part_root
+          - *default_efi_partition
+          - <<: *default_root_partition
+            type: &gpt_aarch64_root
 
 image_config:
   default:
