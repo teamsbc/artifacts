@@ -4,13 +4,16 @@
     - &packages_core
       include:
         - "@core"
+        - "systemd-networkd"
+        - "systemd-networkd-defaults"
         - "teamsbc-release-standard"
+        - "dbus"
         - "grubby"
         - "fwupd-efi"
         - "libxkbcommon"
-        - "NetworkManager-wifi"
         - "linux-firmware"
       exclude:
+        - "NetworkManager"
         - "sssd*"
         - "dracut-config-rescue"
         - "firewalld"
@@ -162,7 +165,6 @@ image_types:
       grub2_config:
         timeout: 5
       enabled_services:
-        - "NetworkManager.service"
         - "sshd.service"
     package_sets:
       os:
@@ -187,7 +189,6 @@ image_types:
       grub2_config:
         timeout: 5
       enabled_services:
-        - "NetworkManager.service"
         - "sshd.service"
     package_sets:
       os:
@@ -213,7 +214,6 @@ image_types:
       grub2_config:
         timeout: 5
       enabled_services:
-        - "NetworkManager.service"
         - "sshd.service"
     package_sets:
       os:
@@ -239,7 +239,6 @@ image_types:
       grub2_config:
         timeout: 5
       enabled_services:
-        - "NetworkManager.service"
         - "sshd.service"
     package_sets:
       os:
