@@ -153,8 +153,6 @@ image_config:
     update_default_kernel: true
     grub2_config:
       timeout: 5
-    enabled_services:
-      - "sshd.service"
     authselect:
       profile: "local"
       features:
