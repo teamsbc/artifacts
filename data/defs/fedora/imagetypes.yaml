@@ -151,6 +151,15 @@ image_config:
       - "rw"
     default_kernel: "kernel-core"
     update_default_kernel: true
+    grub2_config:
+      timeout: 5
+    enabled_services:
+      - "sshd.service"
+    authselect:
+      profile: "local"
+      features:
+        - "with-silent-lastlog"
+        - "with-systemd-homed"
 
 image_types:
   "standard-virt":
@@ -162,16 +171,6 @@ image_types:
     image_func: "disk"
     exports: ["xz"]
     required_partition_sizes: *default_required_dir_sizes
-    image_config:
-      grub2_config:
-        timeout: 5
-      enabled_services:
-        - "sshd.service"
-      authselect:
-        profile: "local"
-        features:
-          - "with-silent-lastlog"
-          - "with-systemd-homed"
     package_sets:
       os:
         - *packages_core
@@ -191,11 +190,6 @@ image_types:
     image_func: "disk"
     exports: ["xz"]
     required_partition_sizes: *default_required_dir_sizes
-    image_config:
-      grub2_config:
-        timeout: 5
-      enabled_services:
-        - "sshd.service"
     package_sets:
       os:
         - *packages_core
@@ -216,11 +210,6 @@ image_types:
     image_func: "disk"
     exports: ["xz"]
     required_partition_sizes: *default_required_dir_sizes
-    image_config:
-      grub2_config:
-        timeout: 5
-      enabled_services:
-        - "sshd.service"
     package_sets:
       os:
         - *packages_core
@@ -241,11 +230,6 @@ image_types:
     image_func: "disk"
     exports: ["xz"]
     required_partition_sizes: *default_required_dir_sizes
-    image_config:
-      grub2_config:
-        timeout: 5
-      enabled_services:
-        - "sshd.service"
     package_sets:
       os:
         - *packages_core
