@@ -1,4 +1,4 @@
-VERSION := 44
+VERSION := 45
 TYPE    := standard-virt
 
 DEFS := $(PWD)/data/defs
