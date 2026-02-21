@@ -19,6 +19,7 @@
         - "dracut-config-rescue"
         - "firewalld"
         - "plymouth"
+        - "kmscon"
     - &packages_rpi
       include:
         - "bcm283x-firmware"
