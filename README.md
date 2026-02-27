@@ -4,7 +4,7 @@ This repository contains the [image-builder](https://osbuild.org/docs/developer-
 
 ## Downloads
 
-Direct links to the latest builds of TeamSBC artifacts. Grouped by the Fedora version they are based on, and architecture.
+Direct links to the latest builds of TeamSBC artifacts. Grouped by the Fedora version they are based on, and architecture. Named by the TeamSBC variant.
 
 ### TeamSBC 44
 
