@@ -28,12 +28,12 @@ jobs:
             version: 44
             arch: aarch64
             runner: ubuntu-24.04-arm
-            type: standard-rpi02w
+            type: legacy-rpi02w
           - distro: fedora
             version: 44
             arch: aarch64
             runner: ubuntu-24.04-arm
-            type: standard-rpi3
+            type: legacy-rpi3
           - distro: fedora
             version: 44
             arch: aarch64
@@ -53,12 +53,12 @@ jobs:
             version: 45
             arch: aarch64
             runner: ubuntu-24.04-arm
-            type: standard-rpi02w
+            type: legacy-rpi02w
           - distro: fedora
             version: 45
             arch: aarch64
             runner: ubuntu-24.04-arm
-            type: standard-rpi3
+            type: legacy-rpi3
           - distro: fedora
             version: 45
             arch: aarch64

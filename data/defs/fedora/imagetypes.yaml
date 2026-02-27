@@ -7,7 +7,6 @@
         - "systemd-pam"
         - "systemd-networkd"
         - "systemd-networkd-defaults"
-        - "teamsbc-release-standard"
         - "dbus"
         - "grubby"
         - "fwupd-efi"
@@ -20,6 +19,12 @@
         - "firewalld"
         - "plymouth"
         - "kmscon"
+    - &packages_standard
+      include:
+        - "teamsbc-release-standard"
+    - &packages_legacy
+      include:
+        - "teamsbc-release-legacy"
     - &packages_rpi
       include:
         - "bcm283x-firmware"
@@ -173,6 +178,7 @@ image_types:
     package_sets:
       os:
         - *packages_core
+        - *packages_standard
     partition_table: *virt_partition_tables
     platforms:
       - <<: *x86_64_uefi_platform
@@ -180,7 +186,7 @@ image_types:
       - <<: *aarch64_uefi_platform
         image_format: "raw"
 
-  "standard-rpi02w":
+  "legacy-rpi02w":
     filename: "disk.raw.xz"
     compression: "xz"
     mime_type: "application/xz"
@@ -192,6 +198,7 @@ image_types:
     package_sets:
       os:
         - *packages_core
+        - *packages_legacy
         - *packages_rpi
     partition_table: *rpi3_rpi02w_partition_tables
     platforms:
@@ -200,7 +207,7 @@ image_types:
         boot_files:
           - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
 
-  "standard-rpi3":
+  "legacy-rpi3":
     filename: "disk.raw.xz"
     compression: "xz"
     mime_type: "application/xz"
@@ -212,6 +219,7 @@ image_types:
     package_sets:
       os:
         - *packages_core
+        - *packages_legacy
         - *packages_rpi
     partition_table: *rpi3_rpi02w_partition_tables
     platforms:
@@ -232,6 +240,7 @@ image_types:
     package_sets:
       os:
         - *packages_core
+        - *packages_standard
         - *packages_rpi
     partition_table: *rpi4_partition_tables
     platforms:
