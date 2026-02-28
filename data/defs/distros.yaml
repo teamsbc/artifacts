@@ -1,7 +1,7 @@
 ---
 distros:
   - name: "teamsbc-{{.MajorVersion}}"
-    defs_path: "fedora"
+    defs_path: "teamsbc"
     product: "TeamSBC"
     distro_like: "fedora"
     default_fs_type: "ext4"
