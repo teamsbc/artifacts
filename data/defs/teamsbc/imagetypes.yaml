@@ -107,6 +107,7 @@
         partitions:
           - *default_efi_partition
           - <<: *default_root_partition
+            size: "2 GiB"
             type: *gpt_x86_64_root
       aarch64: &default_partition_table_aarch64
         type: "gpt"
