@@ -19,6 +19,7 @@
         - "firewalld"
         - "plymouth"
         - "kmscon"
+        - "sudo"
     - &packages_standard
       include:
         - "teamsbc-release-standard"
