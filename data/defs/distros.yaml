@@ -22,3 +22,23 @@ distros:
       # XXX: remove once fedora containers are part of the upstream
       # fedora registry (and can be validated via tls)
       riscv64: "ghcr.io/mvo5/fedora-buildroot:{{.MajorVersion}}"
+    image_config:
+      default:
+        default_oscap_datastream: "/usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml"
+        hostname: "localhost.localdomain"
+        install_weak_deps: false
+        install_langs:
+          - "C"
+        locale: "C.UTF-8"
+        machine_id_uninitialized: true
+        kernel_options:
+          - "rw"
+        default_kernel: "kernel-core"
+        update_default_kernel: true
+        grub2_config:
+          timeout: 5
+        authselect:
+          profile: "local"
+          features:
+            - "with-silent-lastlog"
+            - "with-systemd-homed"

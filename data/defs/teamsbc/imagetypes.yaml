@@ -145,27 +145,6 @@
     rpi4_partition_tables: &rpi4_partition_tables
       aarch64: *default_partition_table_aarch64
 
-image_config:
-  default:
-    default_oscap_datastream: "/usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml"
-    hostname: "localhost.localdomain"
-    install_weak_deps: false
-    install_langs:
-      - "C"
-    locale: "C.UTF-8"
-    machine_id_uninitialized: true
-    mount_units: true
-    kernel_options:
-      - "rw"
-    default_kernel: "kernel-core"
-    update_default_kernel: true
-    grub2_config:
-      timeout: 5
-    authselect:
-      profile: "local"
-      features:
-        - "with-silent-lastlog"
-        - "with-systemd-homed"
 
 image_types:
   "standard-virt":
@@ -187,6 +166,8 @@ image_types:
         image_format: "raw"
       - <<: *aarch64_uefi_platform
         image_format: "raw"
+    disk_config:
+      mount_configuration: "units"
 
   "legacy-rpi02w":
     filename: "disk.raw.xz"
@@ -208,6 +189,8 @@ image_types:
         image_format: "raw"
         boot_files:
           - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
+    disk_config:
+      mount_configuration: "units"
 
   "legacy-rpi3":
     filename: "disk.raw.xz"
@@ -229,6 +212,8 @@ image_types:
         image_format: "raw"
         boot_files:
           - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
+    disk_config:
+      mount_configuration: "units"
 
   "standard-rpi4":
     filename: "disk.raw.xz"
@@ -250,3 +235,5 @@ image_types:
         image_format: "raw"
         boot_files:
           - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
+    disk_config:
+      mount_configuration: "units"
