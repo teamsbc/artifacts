@@ -1,0 +1,35 @@
+name: Generate Indexes
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Build Artifacts"]
+    types: ["completed"]
+    branches:
+      - "main"
+
+jobs:
+  generate-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Code"
+        uses: actions/checkout@v6
+      - name: "Create"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT }}
+        run: |
+          go run github.com/teamsbc/s3-directory-listing/cmd/s3-directory-listing@latest create \
+            teamsbc-artifacts \
+            s3-index-template/default.html \
+            -o /tmp/output
+      - name: "Upload"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT }}
+        run: |
+          aws s3 cp --recursive /tmp/output \
+            "s3://teamsbc-artifacts/" \
+            --no-progress
