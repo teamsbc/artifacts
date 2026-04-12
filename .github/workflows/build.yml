@@ -70,15 +70,17 @@ jobs:
         uses: actions/checkout@v6
       - name: "Setup"
         env:
-          REPO: /artifacts/${{ github.ref_name }}/latest/${{ matrix.build.version }}/${{ matrix.build.arch }}/
+          LATEST: /artifacts/${{ github.ref_name }}/latest/${{ matrix.build.version }}/${{ matrix.build.arch }}/
         run: |
-          sudo mkdir -p $REPO/
+          DATED=/artifacts/${{ github.ref_name }}/$(date +%Y.%m.%d)/${{ matrix.build.version }}/${{ matrix.build.arch }}/
+          sudo mkdir -p $LATEST $DATED
+          echo "DATED=$DATED" >> $GITHUB_ENV
       - name: "Build"
         env:
-          REPO: /artifacts/${{ github.ref_name }}/latest/${{ matrix.build.version }}/${{ matrix.build.arch }}/
+          LATEST: /artifacts/${{ github.ref_name }}/latest/${{ matrix.build.version }}/${{ matrix.build.arch }}/
         run: |
           sudo podman run --rm --privileged \
-          -v $REPO:/output:Z \
+          -v $LATEST:/output:Z \
           -v ./data:/data:Z \
           -e IMAGE_BUILDER_EXPERIMENTAL=yamldir=/data/defs \
           ghcr.io/osbuild/image-builder-cli:latest \
@@ -89,7 +91,12 @@ jobs:
             --distro teamsbc-${{ matrix.build.version }} \
             --with-manifest \
             ${{ matrix.build.type }}
-          ls -larth $REPO/
+          ls -larth $LATEST
+      - name: "Copy to dated directory"
+        env:
+          LATEST: /artifacts/${{ github.ref_name }}/latest/${{ matrix.build.version }}/${{ matrix.build.arch }}/
+        run: |
+          sudo cp -a $LATEST/* $DATED/
       - name: "Upload"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
