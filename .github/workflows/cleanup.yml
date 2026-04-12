@@ -1,0 +1,28 @@
+name: Cleanup Dated Builds
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Build Artifacts"]
+    types: ["completed"]
+    branches:
+      - "main"
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      AWS_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT }}
+    steps:
+      - name: "Keep only the 5 most recent dated builds"
+        run: |
+          aws s3 ls "s3://teamsbc-artifacts/main/" \
+            | grep -oP '\d{4}\.\d{2}\.\d{2}' \
+            | sort -r \
+            | tail -n +6 \
+            | while read DATE; do
+                echo "Removing main/$DATE/"
+                aws s3 rm --recursive "s3://teamsbc-artifacts/main/$DATE/" --no-progress
+              done
