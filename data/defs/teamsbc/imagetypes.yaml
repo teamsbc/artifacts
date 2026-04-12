@@ -41,7 +41,7 @@
       uefi_vendor: "fedora"
       image_format: "raw"
       qcow2_compat: "1.1"
-      packages: &x86_64_uefi_platform_packages
+      packages:
         uefi:
           - "dracut-config-generic"
           - "efibootmgr"
@@ -53,7 +53,7 @@
       uefi_vendor: "fedora"
       image_format: "raw"
       qcow2_compat: "1.1"
-      packages: &aarch64_uefi_platform_packages
+      packages:
         uefi:
           - "dracut-config-generic"
           - "efibootmgr"
@@ -76,7 +76,7 @@
       - &gpt_aarch64_root "b921b045-1df0-41c3-af44-4c6f280d3fae"
       - &gpt_x86_64_root "4f68bce3-e8cd-4db1-96e7-fbcaf984b709"
 
-    # default invidual partitions for easier composibility in the partition
+    # default individual partitions for easier composability in the partition
     # tables below
     partition_defaults:
       - &default_efi_partition
@@ -134,106 +134,71 @@
           - size: "6 GiB"
             type: *dos_linux_filesystem
             payload_type: "filesystem"
-            payload: &default_partition_table_part_root_payload
-              type: "ext4"
-              label: "root"
-              mountpoint: "/"
-              fstab_options: "defaults"
-              fstab_freq: 0
-              fstab_passno: 0
+            payload: *default_partition_table_part_root_payload
 
     rpi4_partition_tables: &rpi4_partition_tables
       aarch64: *default_partition_table_aarch64
 
+  disk_defaults: &disk_defaults
+    filename: "disk.raw.xz"
+    compression: "xz"
+    mime_type: "application/xz"
+    bootable: true
+    default_size: "1 GiB"
+    image_func: "disk"
+    exports: ["xz"]
+    required_partition_sizes: *default_required_dir_sizes
+    disk_config:
+      mount_configuration: "units"
+
 
 image_types:
   "standard-virt":
-    filename: "disk.raw.xz"
-    compression: "xz"
-    mime_type: "application/xz"
-    bootable: true
-    default_size: "1 GiB"
-    image_func: "disk"
-    exports: ["xz"]
-    required_partition_sizes: *default_required_dir_sizes
+    <<: *disk_defaults
+    partition_table: *virt_partition_tables
     package_sets:
       os:
         - *packages_core
         - *packages_standard
-    partition_table: *virt_partition_tables
     platforms:
-      - <<: *x86_64_uefi_platform
-        image_format: "raw"
-      - <<: *aarch64_uefi_platform
-        image_format: "raw"
-    disk_config:
-      mount_configuration: "units"
+      - *x86_64_uefi_platform
+      - *aarch64_uefi_platform
 
   "legacy-rpi02w":
-    filename: "disk.raw.xz"
-    compression: "xz"
-    mime_type: "application/xz"
-    bootable: true
-    default_size: "1 GiB"
-    image_func: "disk"
-    exports: ["xz"]
-    required_partition_sizes: *default_required_dir_sizes
+    <<: *disk_defaults
+    partition_table: *rpi3_rpi02w_partition_tables
     package_sets:
       os:
         - *packages_core
         - *packages_legacy
         - *packages_rpi
-    partition_table: *rpi3_rpi02w_partition_tables
     platforms:
       - <<: *aarch64_uefi_platform
-        image_format: "raw"
         boot_files:
           - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
-    disk_config:
-      mount_configuration: "units"
 
   "legacy-rpi3":
-    filename: "disk.raw.xz"
-    compression: "xz"
-    mime_type: "application/xz"
-    bootable: true
-    default_size: "1 GiB"
-    image_func: "disk"
-    exports: ["xz"]
-    required_partition_sizes: *default_required_dir_sizes
+    <<: *disk_defaults
+    partition_table: *rpi3_rpi02w_partition_tables
     package_sets:
       os:
         - *packages_core
         - *packages_legacy
         - *packages_rpi
-    partition_table: *rpi3_rpi02w_partition_tables
     platforms:
       - <<: *aarch64_uefi_platform
-        image_format: "raw"
         boot_files:
           - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
-    disk_config:
-      mount_configuration: "units"
 
   "standard-rpi4":
-    filename: "disk.raw.xz"
-    compression: "xz"
-    mime_type: "application/xz"
-    bootable: true
-    default_size: "1 GiB"
-    image_func: "disk"
-    exports: ["xz"]
-    required_partition_sizes: *default_required_dir_sizes
+    <<: *disk_defaults
+    partition_table: *rpi4_partition_tables
     package_sets:
       os:
         - *packages_core
         - *packages_standard
         - *packages_rpi
-    partition_table: *rpi4_partition_tables
     platforms:
       - <<: *aarch64_uefi_platform
-        image_format: "raw"
         boot_files:
           - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
-    disk_config:
-      mount_configuration: "units"
