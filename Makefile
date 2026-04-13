@@ -11,6 +11,13 @@ build:
 		build \
 		--distro teamsbc-$(VERSION) $(TYPE)
 
+.PHONY: manifest
+manifest:
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamldir=$(DEFS) image-builder \
+		--force-repo-dir=$(REPO) \
+		manifest \
+		--distro teamsbc-$(VERSION) $(TYPE)
+
 .PHONY: build-in-container
 build-in-container:
 	@sudo podman run --pull=newer \
