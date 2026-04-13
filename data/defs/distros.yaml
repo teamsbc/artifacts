@@ -25,7 +25,6 @@ distros:
     image_config:
       default:
         default_oscap_datastream: "/usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml"
-        hostname: "localhost.localdomain"
         install_weak_deps: false
         install_langs:
           - "C"
