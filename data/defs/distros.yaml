@@ -28,7 +28,6 @@ distros:
         install_weak_deps: false
         install_langs:
           - "C"
-        locale: "C.UTF-8"
         machine_id_uninitialized: true
         kernel_options:
           - "rw"
