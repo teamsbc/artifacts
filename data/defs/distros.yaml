@@ -33,8 +33,6 @@ distros:
         machine_id_uninitialized: true
         kernel_options:
           - "rw"
-        default_kernel: "kernel-core"
-        update_default_kernel: true
         grub2_config:
           timeout: 5
         authselect:
