@@ -148,13 +148,21 @@
     image_func: "disk"
     exports: ["xz"]
     required_partition_sizes: *default_required_dir_sizes
+
+  disk_defaults_standard: &disk_defaults_standard
+    <<: *disk_defaults
+    disk_config:
+      mount_configuration: "none"
+
+  disk_defaults_legacy: &disk_defaults_legacy
+    <<: *disk_defaults
     disk_config:
       mount_configuration: "units"
 
 
 image_types:
   "standard-virt":
-    <<: *disk_defaults
+    <<: *disk_defaults_standard
     partition_table: *virt_partition_tables
     package_sets:
       os:
@@ -165,7 +173,7 @@ image_types:
       - *aarch64_uefi_platform
 
   "legacy-rpi02w":
-    <<: *disk_defaults
+    <<: *disk_defaults_legacy
     partition_table: *rpi3_rpi02w_partition_tables
     package_sets:
       os:
@@ -178,7 +186,7 @@ image_types:
           - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
 
   "legacy-rpi3":
-    <<: *disk_defaults
+    <<: *disk_defaults_legacy
     partition_table: *rpi3_rpi02w_partition_tables
     package_sets:
       os:
@@ -191,7 +199,7 @@ image_types:
           - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
 
   "standard-rpi4":
-    <<: *disk_defaults
+    <<: *disk_defaults_standard
     partition_table: *rpi4_partition_tables
     package_sets:
       os:
