@@ -1,0 +1,3 @@
+[submodule "s3-index-template"]
+	path = s3-index-template
+	url = https://github.com/teamsbc/s3-directory-listing-template

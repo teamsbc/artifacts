@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: "Checkout Code"
         uses: actions/checkout@v6
+        with:
+          submodules: true
       - name: "Create"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
