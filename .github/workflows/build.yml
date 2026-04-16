@@ -74,6 +74,8 @@ jobs:
         run: |
           DATED=/artifacts/${{ github.ref_name }}/$(date +%Y.%m.%d)/${{ matrix.build.version }}/${{ matrix.build.arch }}/
           sudo mkdir -p $LATEST $DATED
+          sudo mkdir -p $LATEST/meta
+          echo "LATEST=$LATEST" >> $GITHUB_ENV
           echo "DATED=$DATED" >> $GITHUB_ENV
       - name: "Build"
         env:
@@ -92,11 +94,12 @@ jobs:
             --with-manifest \
             ${{ matrix.build.type }}
           ls -larth $LATEST
-      - name: "Copy to dated directory"
-        env:
-          LATEST: /artifacts/${{ github.ref_name }}/latest/${{ matrix.build.version }}/${{ matrix.build.arch }}/
+      - name: "Move metadata"
         run: |
-          sudo cp -a $LATEST/* $DATED/
+          sudo mv $LATEST/*.json $LATEST/meta/
+      - name: "Copy to dated directory"
+        run: |
+          sudo cp -vra $LATEST/* $DATED/
       - name: "Upload"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
