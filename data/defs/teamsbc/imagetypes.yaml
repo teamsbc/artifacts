@@ -23,9 +23,6 @@
     - &packages_standard
       include:
         - "teamsbc-release-standard"
-    - &packages_legacy
-      include:
-        - "teamsbc-release-legacy"
     - &packages_rpi
       include:
         - "bcm283x-firmware"
@@ -117,25 +114,6 @@
           - <<: *default_root_partition
             type: *gpt_aarch64_root
 
-    rpi3_rpi02w_partition_tables: &rpi3_rpi02w_partition_tables
-      aarch64:
-        type: "dos"
-        partitions:
-          - size: "200 MiB"
-            type: *dos_fat16
-            payload_type: "filesystem"
-            payload:
-              type: "vfat"
-              mountpoint: "/boot/efi"
-              label: "ESP"
-              fstab_options: "defaults,uid=0,gid=0,umask=077,shortname=winnt"
-              fstab_freq: 0
-              fstab_passno: 2
-          - size: "6 GiB"
-            type: *dos_linux_filesystem
-            payload_type: "filesystem"
-            payload: *default_partition_table_part_root_payload
-
     rpi4_partition_tables: &rpi4_partition_tables
       aarch64: *default_partition_table_aarch64
 
@@ -154,12 +132,6 @@
     disk_config:
       mount_configuration: "none"
 
-  disk_defaults_legacy: &disk_defaults_legacy
-    <<: *disk_defaults
-    disk_config:
-      mount_configuration: "units"
-
-
 image_types:
   "standard-virt":
     <<: *disk_defaults_standard
@@ -171,32 +143,6 @@ image_types:
     platforms:
       - *x86_64_uefi_platform
       - *aarch64_uefi_platform
-
-  "legacy-rpi02w":
-    <<: *disk_defaults_legacy
-    partition_table: *rpi3_rpi02w_partition_tables
-    package_sets:
-      os:
-        - *packages_core
-        - *packages_legacy
-        - *packages_rpi
-    platforms:
-      - <<: *aarch64_uefi_platform
-        boot_files:
-          - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
-
-  "legacy-rpi3":
-    <<: *disk_defaults_legacy
-    partition_table: *rpi3_rpi02w_partition_tables
-    package_sets:
-      os:
-        - *packages_core
-        - *packages_legacy
-        - *packages_rpi
-    platforms:
-      - <<: *aarch64_uefi_platform
-        boot_files:
-          - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
 
   "standard-rpi4":
     <<: *disk_defaults_standard
