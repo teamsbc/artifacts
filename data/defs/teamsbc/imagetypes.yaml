@@ -4,49 +4,6 @@
     default_required_partition_sizes: &default_required_dir_sizes
       "/": "2 GiB"
 
-    # default individual partitions for easier composability in the partition
-    # tables below
-    partition_defaults:
-      - &default_efi_partition
-        size: "200 MiB"
-        type: !xref "library/dps.yaml#esp"
-        payload_type: "filesystem"
-        payload:
-          type: vfat
-          mountpoint: "/boot/efi"
-          label: "ESP"
-          fstab_options: "defaults,uid=0,gid=0,umask=077,shortname=winnt"
-          fstab_freq: 0
-          fstab_passno: 2
-      - &default_root_partition
-        size: "6 GiB"
-        payload_type: "filesystem"
-        payload: &default_partition_table_part_root_payload
-          type: "ext4"
-          label: "root"
-          mountpoint: "/"
-          fstab_options: "defaults"
-          fstab_freq: 0
-          fstab_passno: 0
-
-    virt_partition_tables: &virt_partition_tables
-      x86_64:
-        type: "gpt"
-        partitions:
-          - *default_efi_partition
-          - <<: *default_root_partition
-            size: "2 GiB"
-            type: !xref "library/dps.yaml#root_x86_64"
-      aarch64: &default_partition_table_aarch64
-        type: "gpt"
-        partitions:
-          - *default_efi_partition
-          - <<: *default_root_partition
-            type: !xref "library/dps.yaml#root_aarch64"
-
-    rpi4_partition_tables: &rpi4_partition_tables
-      aarch64: *default_partition_table_aarch64
-
   disk_defaults: &disk_defaults
     filename: "disk.raw.xz"
     compression: "xz"
@@ -65,7 +22,7 @@
 image_types:
   "standard-virt":
     <<: *disk_defaults_standard
-    partition_table: *virt_partition_tables
+    partition_table: !xref "library/disk/tables.yaml#virt"
     package_sets:
       os:
         - !xref "library/packages.yaml#core"
@@ -76,7 +33,7 @@ image_types:
 
   "standard-rpi4":
     <<: *disk_defaults_standard
-    partition_table: *rpi4_partition_tables
+    partition_table: !xref "library/disk/tables.yaml#rpi4"
     package_sets:
       os:
         - !xref "library/packages.yaml#core"
