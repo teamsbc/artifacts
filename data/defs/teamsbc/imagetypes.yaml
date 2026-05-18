@@ -1,32 +1,5 @@
 ---
 .common:
-  platforms:
-    x86_64_uefi_platform: &x86_64_uefi_platform
-      arch: "x86_64"
-      uefi_vendor: "fedora"
-      image_format: "raw"
-      qcow2_compat: "1.1"
-      packages:
-        uefi:
-          - "dracut-config-generic"
-          - "efibootmgr"
-          - "grub2-efi-x64"
-          - "shim-x64"
-      bootloader: "grub2"
-    aarch64_uefi_platform: &aarch64_uefi_platform
-      arch: "aarch64"
-      uefi_vendor: "fedora"
-      image_format: "raw"
-      qcow2_compat: "1.1"
-      packages:
-        uefi:
-          - "dracut-config-generic"
-          - "efibootmgr"
-          - "grub2-efi-aa64"
-          - "grub2-tools"
-          - "shim-aa64"
-      bootloader: "grub2"
-
   disk_sizes:
     default_required_partition_sizes: &default_required_dir_sizes
       "/": "2 GiB"
@@ -98,8 +71,8 @@ image_types:
         - !xref "library/packages.yaml#core"
         - !xref "library/packages.yaml#standard"
     platforms:
-      - *x86_64_uefi_platform
-      - *aarch64_uefi_platform
+      - !xref "library/platforms.yaml#x86_64_uefi"
+      - !xref "library/platforms.yaml#aarch64_uefi"
 
   "standard-rpi4":
     <<: *disk_defaults_standard
@@ -110,6 +83,6 @@ image_types:
         - !xref "library/packages.yaml#standard"
         - !xref "library/packages.yaml#rpi"
     platforms:
-      - <<: *aarch64_uefi_platform
+      - <<: !xref "library/platforms.yaml#aarch64_uefi"
         boot_files:
           - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
