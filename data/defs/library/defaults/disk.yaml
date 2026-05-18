@@ -1,0 +1,13 @@
+---
+standard: &standard
+  filename: "disk.raw.xz"
+  compression: "xz"
+  mime_type: "application/xz"
+  bootable: true
+  default_size: "1 GiB"
+  image_func: "disk"
+  exports: ["xz"]
+  required_partition_sizes:
+    "/": "2 GiB"
+  disk_config:
+    mount_configuration: "none"
