@@ -1,0 +1,27 @@
+---
+x86_64_uefi: &x86_64_uefi
+  arch: "x86_64"
+  uefi_vendor: "fedora"
+  image_format: "raw"
+  qcow2_compat: "1.1"
+  packages:
+    uefi:
+      - "dracut-config-generic"
+      - "efibootmgr"
+      - "grub2-efi-x64"
+      - "shim-x64"
+  bootloader: "grub2"
+
+aarch64_uefi: &aarch64_uefi
+  arch: "aarch64"
+  uefi_vendor: "fedora"
+  image_format: "raw"
+  qcow2_compat: "1.1"
+  packages:
+    uefi:
+      - "dracut-config-generic"
+      - "efibootmgr"
+      - "grub2-efi-aa64"
+      - "grub2-tools"
+      - "shim-aa64"
+  bootloader: "grub2"
