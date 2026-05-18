@@ -1,0 +1,24 @@
+---
+virt: &virt
+  x86_64:
+    type: "gpt"
+    partitions:
+      - !xref "library/disk/partitions.yaml#esp"
+      - <<: !xref "library/disk/partitions.yaml#root"
+        size: "2 GiB"
+        type: !xref "library/dps.yaml#root_x86_64"
+
+  aarch64:
+    type: "gpt"
+    partitions:
+      - !xref "library/disk/partitions.yaml#esp"
+      - <<: !xref "library/disk/partitions.yaml#root"
+        type: !xref "library/dps.yaml#root_aarch64"
+
+rpi4: &rpi4
+  aarch64:
+    type: "gpt"
+    partitions:
+      - !xref "library/disk/partitions.yaml#esp"
+      - <<: !xref "library/disk/partitions.yaml#root"
+        type: !xref "library/dps.yaml#root_aarch64"
