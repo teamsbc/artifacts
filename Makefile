@@ -6,14 +6,14 @@ REPO := $(PWD)/data/repo
 
 .PHONY: build
 build:
-	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamldir=$(DEFS) image-builder \
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=$(DEFS) image-builder \
 		--force-repo-dir=$(REPO) \
 		build \
 		--distro teamsbc-$(VERSION) $(TYPE)
 
 .PHONY: manifest
 manifest:
-	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamldir=$(DEFS) image-builder \
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=$(DEFS) image-builder \
 		--force-repo-dir=$(REPO) \
 		manifest \
 		--distro teamsbc-$(VERSION) $(TYPE)
@@ -22,7 +22,7 @@ manifest:
 build-in-container:
 	@sudo podman run --pull=newer \
 		--privileged \
-		-e IMAGE_BUILDER_EXPERIMENTAL=yamldir=/defs \
+		-e IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=/defs \
 		-v ${DEFS}:/defs \
 		-v ${REPO}:/repo \
 		-v .:/output:rw \
@@ -34,6 +34,6 @@ build-in-container:
 
 .PHONY: list
 list:
-	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamldir=$(DEFS) image-builder \
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=$(DEFS) image-builder \
 		--force-repo-dir=$(REPO) \
 		list
