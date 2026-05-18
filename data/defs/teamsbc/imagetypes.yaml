@@ -63,22 +63,12 @@
     default_required_partition_sizes: &default_required_dir_sizes
       "/": "2 GiB"
 
-  partitioning:
-    mbr_ids:
-      - &dos_linux_filesystem "83"
-      - &dos_fat16 "06"
-    gpt_guids:
-      - &gpt_efi_system_partition "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
-      - &gpt_generic_linux_data "0FC63DAF-8483-4772-8E79-3D69D8477DE4"
-      - &gpt_aarch64_root "b921b045-1df0-41c3-af44-4c6f280d3fae"
-      - &gpt_x86_64_root "4f68bce3-e8cd-4db1-96e7-fbcaf984b709"
-
     # default individual partitions for easier composability in the partition
     # tables below
     partition_defaults:
       - &default_efi_partition
         size: "200 MiB"
-        type: *gpt_efi_system_partition
+        type: !xref "library/dps.yaml#esp"
         payload_type: "filesystem"
         payload:
           type: vfat
@@ -89,7 +79,6 @@
           fstab_passno: 2
       - &default_root_partition
         size: "6 GiB"
-        type: *gpt_generic_linux_data
         payload_type: "filesystem"
         payload: &default_partition_table_part_root_payload
           type: "ext4"
@@ -106,13 +95,13 @@
           - *default_efi_partition
           - <<: *default_root_partition
             size: "2 GiB"
-            type: *gpt_x86_64_root
+            type: !xref "library/dps.yaml#root_x86_64"
       aarch64: &default_partition_table_aarch64
         type: "gpt"
         partitions:
           - *default_efi_partition
           - <<: *default_root_partition
-            type: *gpt_aarch64_root
+            type: !xref "library/dps.yaml#root_aarch64"
 
     rpi4_partition_tables: &rpi4_partition_tables
       aarch64: *default_partition_table_aarch64
