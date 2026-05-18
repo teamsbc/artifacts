@@ -1,0 +1,33 @@
+---
+core: &core
+  include:
+    - "@core"
+    - "systemd-pam"
+    - "systemd-networkd"
+    - "systemd-networkd-defaults"
+    - "dbus"
+    - "grubby"
+    - "fwupd-efi"
+    - "libxkbcommon"
+    - "linux-firmware"
+  exclude:
+    - "NetworkManager"
+    - "sssd*"
+    - "dracut-config-rescue"
+    - "firewalld"
+    - "plymouth"
+    - "kmscon"
+    - "sudo"
+
+standard: &standard
+  include:
+    - "teamsbc-release-standard"
+
+rpi: &rpi
+  include:
+    - "bcm283x-firmware"
+    - "brcmfmac-firmware"
+    # we'd really like this to be only in the build pipeline as it
+    # bloats the size of the image quite a bit; needs some upstream
+    # work to achieve that
+    - "uboot-images-armv8"
