@@ -1,37 +1,5 @@
 ---
 .common:
-  packages:
-    - &packages_core
-      include:
-        - "@core"
-        - "systemd-pam"
-        - "systemd-networkd"
-        - "systemd-networkd-defaults"
-        - "dbus"
-        - "grubby"
-        - "fwupd-efi"
-        - "libxkbcommon"
-        - "linux-firmware"
-      exclude:
-        - "NetworkManager"
-        - "sssd*"
-        - "dracut-config-rescue"
-        - "firewalld"
-        - "plymouth"
-        - "kmscon"
-        - "sudo"
-    - &packages_standard
-      include:
-        - "teamsbc-release-standard"
-    - &packages_rpi
-      include:
-        - "bcm283x-firmware"
-        - "brcmfmac-firmware"
-        # we'd really like this to be only in the build pipeline as it
-        # bloats the size of the image quite a bit; needs some upstream
-        # work to achieve that
-        - "uboot-images-armv8"
-
   platforms:
     x86_64_uefi_platform: &x86_64_uefi_platform
       arch: "x86_64"
@@ -127,8 +95,8 @@ image_types:
     partition_table: *virt_partition_tables
     package_sets:
       os:
-        - *packages_core
-        - *packages_standard
+        - !xref "library/packages.yaml#core"
+        - !xref "library/packages.yaml#standard"
     platforms:
       - *x86_64_uefi_platform
       - *aarch64_uefi_platform
@@ -138,9 +106,9 @@ image_types:
     partition_table: *rpi4_partition_tables
     package_sets:
       os:
-        - *packages_core
-        - *packages_standard
-        - *packages_rpi
+        - !xref "library/packages.yaml#core"
+        - !xref "library/packages.yaml#standard"
+        - !xref "library/packages.yaml#rpi"
     platforms:
       - <<: *aarch64_uefi_platform
         boot_files:
