@@ -1,16 +1,5 @@
 ---
 image_types:
-  "standard-virt":
-    <<: !xref "library/defaults/disk.yaml#standard"
-    partition_table: !xref "library/disk/tables.yaml#virt"
-    package_sets:
-      os:
-        - !xref "library/packages.yaml#core"
-        - !xref "library/packages.yaml#standard"
-    platforms:
-      - !xref "library/platforms.yaml#x86_64_uefi"
-      - !xref "library/platforms.yaml#aarch64_uefi"
-
   "standard-rpi4":
     <<: !xref "library/defaults/disk.yaml#standard"
     partition_table: !xref "library/disk/tables.yaml#rpi4"
