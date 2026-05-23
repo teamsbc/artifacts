@@ -64,7 +64,7 @@ jobs:
           sudo podman run --rm --privileged \
           -v $LATEST:/output:Z \
           -v ./data:/data:Z \
-          -e IMAGE_BUILDER_EXPERIMENTAL=yamldir=/data/defs \
+          -e IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=/data/defs \
           ghcr.io/osbuild/image-builder-cli:latest \
             --progress=verbose \
             --force-repo-dir=/data/repo \
