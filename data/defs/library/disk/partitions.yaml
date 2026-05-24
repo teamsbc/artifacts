@@ -13,6 +13,10 @@ esp: &esp
 
 root: &root
   size: "6 GiB"
+  attrs:
+    - 59  # grow filesystem gpt flag, setting this allows tooling that
+          # understands this flag (systemd) to automatically grow the filesystem
+          # when the partition is mounted
   payload_type: "filesystem"
   payload:
     type: "ext4"
