@@ -22,6 +22,7 @@ core: &core
 standard: &standard
   include:
     - "teamsbc-release-standard"
+    - "teamsbc-config-standard"
 
 rpi: &rpi
   include:
