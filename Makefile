@@ -22,12 +22,13 @@ manifest:
 build-in-container:
 	@sudo podman run --pull=newer \
 		--privileged \
-		-e IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=/defs \
+		-e IMAGE_BUILDER_EXPERIMENTAL=yamlplus \
 		-v ${DEFS}:/defs \
 		-v ${REPO}:/repo \
 		-v .:/output:rw \
 		ghcr.io/osbuild/image-builder-cli:latest \
 		--force-repo-dir=/repo \
+		--force-defs-dir=/defs \
 		build \
 		--output-dir /output \
 		--distro teamsbc-$(VERSION) $(TYPE)
