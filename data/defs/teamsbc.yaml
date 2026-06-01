@@ -32,8 +32,6 @@ distros:
         kernel_options:
           - "rw"
         kernel_options_bootloader: true
-        grub2_config:
-          timeout: 5
         authselect:
           profile: "local"
           features:

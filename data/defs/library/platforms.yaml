@@ -7,10 +7,8 @@ x86_64_uefi: &x86_64_uefi
   packages:
     uefi:
       - "dracut-config-generic"
-      - "efibootmgr"
-      - "grub2-efi-x64"
-      - "shim-x64"
-  bootloader: "grub2"
+      - "systemd-boot"
+  bootloader: "systemd"
 
 aarch64_uefi: &aarch64_uefi
   arch: "aarch64"
@@ -20,8 +18,5 @@ aarch64_uefi: &aarch64_uefi
   packages:
     uefi:
       - "dracut-config-generic"
-      - "efibootmgr"
-      - "grub2-efi-aa64"
-      - "grub2-tools"
-      - "shim-aa64"
-  bootloader: "grub2"
+      - "systemd-boot"
+  bootloader: "systemd"

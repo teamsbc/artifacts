@@ -6,7 +6,6 @@ core: &core
     - "systemd-networkd"
     - "systemd-networkd-defaults"
     - "dbus"
-    - "grubby"
     - "fwupd-efi"
     - "libxkbcommon"
     - "linux-firmware"
@@ -18,6 +17,8 @@ core: &core
     - "plymouth"
     - "kmscon"
     - "sudo"
+    # We don't want /boot/efi to exist as we don't use it
+    - "efi-filesystem"
 
 standard: &standard
   include:
