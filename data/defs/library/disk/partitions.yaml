@@ -1,11 +1,11 @@
 ---
 esp: &esp
-  size: "200 MiB"
+  size: "1 GiB"
   type: !xref "library/dps.yaml#esp"
   payload_type: "filesystem"
-  payload:
+  payload: &esp_payload
     type: vfat
-    mountpoint: "/boot/efi"
+    mountpoint: "/boot"
     label: "ESP"
     fstab_options: "defaults,uid=0,gid=0,umask=077,shortname=winnt"
     fstab_freq: 0

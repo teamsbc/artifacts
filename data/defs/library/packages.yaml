@@ -6,10 +6,12 @@ core: &core
     - "systemd-networkd"
     - "systemd-networkd-defaults"
     - "dbus"
-    - "grubby"
     - "fwupd-efi"
     - "libxkbcommon"
     - "linux-firmware"
+    # We don't want /boot/efi to exist as we don't use it but we can't
+    # exclude the package as `bcm283x-firmware` depends on it.
+    - "efi-filesystem"
   exclude:
     - "NetworkManager"
     - "sssd*"

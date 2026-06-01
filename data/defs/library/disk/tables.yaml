@@ -19,6 +19,12 @@ rpi4: &rpi4
   aarch64:
     type: "gpt"
     partitions:
-      - !xref "library/disk/partitions.yaml#esp"
+      - <<: !xref "library/disk/partitions.yaml#esp"
+        payload:
+          <<: !xref "library/disk/partitions.yaml#esp_payload"
+          mountpoint: "/boot/efi"  # bcm283x-firmware installs directly to /boot/efi
+                                   # thus it needs to be mounted there during build.
+                                   # during runtime it will be mounted directly at /boot
+                                   # by systemd-gpt-auto-generator.
       - <<: !xref "library/disk/partitions.yaml#root"
         type: !xref "library/dps.yaml#root_aarch64"
