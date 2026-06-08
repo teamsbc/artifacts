@@ -6,15 +6,17 @@ REPO := $(PWD)/data/repo
 
 .PHONY: build
 build:
-	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=$(DEFS) image-builder \
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus image-builder \
 		--force-repo-dir=$(REPO) \
+		--force-defs-dir=$(DEFS) \
 		build \
 		--distro teamsbc-$(VERSION) $(TYPE)
 
 .PHONY: manifest
 manifest:
-	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=$(DEFS) image-builder \
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus image-builder \
 		--force-repo-dir=$(REPO) \
+		--force-repo-dir=$(DEFS) \
 		manifest \
 		--distro teamsbc-$(VERSION) $(TYPE)
 
@@ -35,6 +37,7 @@ build-in-container:
 
 .PHONY: list
 list:
-	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=$(DEFS) image-builder \
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus image-builder \
 		--force-repo-dir=$(REPO) \
+		--force-defs-dir=$(DEFS) \
 		list
