@@ -26,7 +26,6 @@ aarch64_uefi_rpi4: &aarch64_uefi_rpi4
   packages:
     <<: *aarch64_uefi_packages
     firmware:
-      - "bcm283x-firmware"
       - "brcmfmac-firmware"
   build_packages:
     # some firmware packages can be quite large and don't offer update
@@ -34,7 +33,69 @@ aarch64_uefi_rpi4: &aarch64_uefi_rpi4
     # but instead users can later install them if they wish to update.
     uboot:
       - "uboot-images-armv8"
+    # other firmware packages are problematic because they use `%{efi_` macros
+    # which are expanded at build time and hardcode to /boot/efi. this leads to
+    # all sorts of issues [1] so we install them in the buildroot and copy the
+    # files manually instead
+    # these packages are then blocked from installation on a running system through
+    # a dnf configuration dropin as they would install to the wrong place.
+    # systemd-gpt-auto-generator would mount the ESP at either /boot or /efi in our
+    # case:, /boot so the macros expand wrongly
+    firmware:
+      - "bcm283x-firmware"
   boot_files:
+    # copy over the rpi specific u-boot
     - src: "/usr/share/uboot/rpi_arm64/u-boot.bin"
-      dst: "/boot/efi/rpi-u-boot.bin"
+      dst: "/boot/rpi-u-boot.bin"
+      from_build: true
+    # copy over the general rpi files from bcm283x-firmware
+    - src: "/boot/efi/config.txt"
+      dst: "/boot/config.txt"
+      from_build: true
+    - src: "/boot/efi/bootcode.bin"
+      dst: "/boot/bootcode.bin"
+      from_build: true
+    - src: "/boot/efi/overlays"
+      dst: "/boot/overlays"
+      from_build: true
+    # copy over files specific to the rpi4 from bcm283x-firmware
+    - src: "/boot/efi/fixup4.dat"
+      dst: "/boot/fixup4.dat"
+      from_build: true
+    - src: "/boot/efi/fixup4cd.dat"
+      dst: "/boot/fixup4cd.dat"
+      from_build: true
+    - src: "/boot/efi/fixup4db.dat"
+      dst: "/boot/fixup4db.dat"
+      from_build: true
+    - src: "/boot/efi/fixup4x.dat"
+      dst: "/boot/fixup4x.dat"
+      from_build: true
+    - src: "/boot/efi/start4.elf"
+      dst: "/boot/start4.elf"
+      from_build: true
+    - src: "/boot/efi/start4cd.elf"
+      dst: "/boot/start4cd.elf"
+      from_build: true
+    - src: "/boot/efi/start4db.elf"
+      dst: "/boot/start4db.elf"
+      from_build: true
+    - src: "/boot/efi/start4x.elf"
+      dst: "/boot/start4x.elf"
+      from_build: true
+    # and dtbs
+    - src: "/boot/efi/bcm2711-rpi-4-b.dtb"
+      dst: "/boot/bcm2711-rpi-4-b.dtb"
+      from_build: true
+    - src: "/boot/efi/bcm2711-rpi-400.dtb"
+      dst: "/boot/bcm2711-rpi-400.dtb"
+      from_build: true
+    - src: "/boot/efi/bcm2711-rpi-cm4-io.dtb"
+      dst: "/boot/bcm2711-rpi-cm4-io.dtb"
+      from_build: true
+    - src: "/boot/efi/bcm2711-rpi-cm4.dtb"
+      dst: "/boot/bcm2711-rpi-cm4.dtb"
+      from_build: true
+    - src: "/boot/efi/bcm2711-rpi-cm4s.dtb"
+      dst: "/boot/bcm2711-rpi-cm4s.dtb"
       from_build: true
