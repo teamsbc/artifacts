@@ -15,8 +15,26 @@ aarch64_uefi: &aarch64_uefi
   uefi_vendor: "fedora"
   image_format: "raw"
   qcow2_compat: "1.1"
-  packages:
+  packages: &aarch64_uefi_packages
     uefi:
       - "dracut-config-generic"
       - "systemd-boot"
   bootloader: "systemd"
+
+aarch64_uefi_rpi4: &aarch64_uefi_rpi4
+  <<: *aarch64_uefi
+  packages:
+    <<: *aarch64_uefi_packages
+    firmware:
+      - "bcm283x-firmware"
+      - "brcmfmac-firmware"
+  build_packages:
+    # some firmware packages can be quite large and don't offer update
+    # functionality. let's not have them installed in the image by default
+    # but instead users can later install them if they wish to update.
+    uboot:
+      - "uboot-images-armv8"
+  boot_files:
+    - src: "/usr/share/uboot/rpi_arm64/u-boot.bin"
+      dst: "/boot/efi/rpi-u-boot.bin"
+      from_build: true

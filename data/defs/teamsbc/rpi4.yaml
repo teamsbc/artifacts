@@ -3,12 +3,9 @@ image_types:
   "standard-rpi4":
     <<: !xref "library/defaults/disk.yaml#standard"
     partition_table: !xref "library/disk/tables.yaml#rpi4"
+    platforms:
+      - !xref "library/platforms.yaml#aarch64_uefi_rpi4"
     package_sets:
       os:
         - !xref "library/packages.yaml#core"
         - !xref "library/packages.yaml#standard"
-        - !xref "library/packages.yaml#rpi"
-    platforms:
-      - <<: !xref "library/platforms.yaml#aarch64_uefi"
-        boot_files:
-          - ["/usr/share/uboot/rpi_arm64/u-boot.bin", "/boot/efi/rpi-u-boot.bin"]
