@@ -9,6 +9,7 @@ core: &core
     - "fwupd-efi"
     - "libxkbcommon"
     - "linux-firmware"
+    - "teamsbc-selinux"
   exclude:
     - "NetworkManager"
     - "sssd*"
