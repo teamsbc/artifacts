@@ -1,10 +1,10 @@
 ---
 image_types:
-  "standard-rpi4":
+  "standard-rpi5":
     <<: !xref "library/defaults/disk.yaml#standard"
     partition_table: !xref "library/disk/tables.yaml#rpi"
     platforms:
-      - !xref "library/platforms.yaml#aarch64_uefi_rpi4"
+      - !xref "library/platforms.yaml#aarch64_uefi_rpi5"
     package_sets:
       os:
         - !xref "library/packages.yaml#core"

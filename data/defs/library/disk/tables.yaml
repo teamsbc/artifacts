@@ -15,7 +15,7 @@ virt: &virt
       - <<: !xref "library/disk/partitions.yaml#root"
         type: !xref "library/dps.yaml#root_aarch64"
 
-rpi4: &rpi4
+rpi: &rpi
   aarch64:
     type: "gpt"
     partitions:
