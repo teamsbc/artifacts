@@ -5,6 +5,10 @@
 
 This repository contains the [image-builder](https://osbuild.org/docs/developer-guide/projects/image-builder/) definitions for the various TeamSBC artifacts. Artifacts are also built here through the use of GitHub actions.
 
+## Usage
+
+For more information about how to use these artifacts and what they contain you can take a look at the [handbook](https://handbook.teamsbc.org/). Specifically the [installation section](https://handbook.teamsbc.org/getting-started/installation.html) or the [variants section](https://handbook.teamsbc.org/getting-started/variants.html).
+
 ## Downloads
 
 Direct links to the latest builds of TeamSBC artifacts. Grouped by the Fedora version they are based on, and architecture. Named by the TeamSBC variant. You can also [browse artifacts](https://artifacts.teamsbc.net/index.html) on our artifacts storage.
@@ -42,7 +46,9 @@ You can build artifacts locally using the provided `Makefile` in this repository
 ### Build
 
 ```
-make build DISTRO=44 TYPE=standard-virt
+make build-in-container DISTRO=44 TYPE=standard-virt
 ```
 
-Will build a TeamSBC Remix, Fedora 44 based `standard-virt` artifact.
+Will build a TeamSBC Remix, Fedora 44 based `standard-virt` artifact. Since TeamSBC often uses the latest features of `image-builder` there's a chance that they might not yet be in a released version hence the default suggestion here is to build with the upstream container.
+
+If you don't or can't use containers you can replace `build-in-container` with `build` and your locally installed `image-builder` version will be used.
