@@ -23,3 +23,7 @@ standard: &standard
   include:
     - "teamsbc-release-standard"
     - "teamsbc-config-standard"
+
+wifi: &wifi
+  include:
+    - "wpa_supplicant"

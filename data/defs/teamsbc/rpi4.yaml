@@ -9,3 +9,4 @@ image_types:
       os:
         - !xref "library/packages.yaml#core"
         - !xref "library/packages.yaml#standard"
+        - !xref "library/packages.yaml#wifi"
