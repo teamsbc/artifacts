@@ -23,6 +23,7 @@ Direct links to the latest builds of TeamSBC artifacts. Grouped by the Fedora ve
 
 - [standard-virt](https://artifacts.teamsbc.net/main/latest/44/aarch64/teamsbc-44-standard-virt-aarch64.raw.xz)
 - [standard-rpi4](https://artifacts.teamsbc.net/main/latest/44/aarch64/teamsbc-44-standard-rpi4-aarch64.raw.xz)
+- [standard-rpi5](https://artifacts.teamsbc.net/main/latest/44/aarch64/teamsbc-44-standard-rpi5-aarch64.raw.xz)
 
 ### TeamSBC 45
 
@@ -34,6 +35,7 @@ Direct links to the latest builds of TeamSBC artifacts. Grouped by the Fedora ve
 
 - [standard-virt](https://artifacts.teamsbc.net/main/latest/45/aarch64/teamsbc-45-standard-virt-aarch64.raw.xz)
 - [standard-rpi4](https://artifacts.teamsbc.net/main/latest/45/aarch64/teamsbc-45-standard-rpi4-aarch64.raw.xz)
+- [standard-rpi5](https://artifacts.teamsbc.net/main/latest/45/aarch64/teamsbc-45-standard-rpi5-aarch64.raw.xz)
 
 ## Building
 
