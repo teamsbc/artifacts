@@ -29,8 +29,6 @@ distros:
         install_langs:
           - "C"
         machine_id_uninitialized: true
-        kernel_options:
-          - "rw"
         kernel_options_bootloader: true
         authselect:
           profile: "local"
