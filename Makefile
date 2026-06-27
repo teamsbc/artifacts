@@ -35,6 +35,20 @@ build-in-container:
 		--output-dir /output \
 		--distro teamsbc-$(VERSION) $(TYPE)
 
+.PHONY: manifest-in-container
+manifest-in-container:
+	@sudo podman run --pull=newer \
+		--privileged \
+		-e IMAGE_BUILDER_EXPERIMENTAL=yamlplus \
+		-v ${DEFS}:/defs \
+		-v ${REPO}:/repo \
+		-v .:/output:rw \
+		ghcr.io/osbuild/image-builder-cli:latest \
+		--force-repo-dir=/repo \
+		--force-defs-dir=/defs \
+		manifest --arch aarch64 \
+		--distro teamsbc-$(VERSION) $(TYPE)
+
 .PHONY: list
 list:
 	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus image-builder \
