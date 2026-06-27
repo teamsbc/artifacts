@@ -24,6 +24,7 @@ manifest:
 build-in-container:
 	@sudo podman run --pull=newer \
 		--privileged \
+		--rm \
 		-e IMAGE_BUILDER_EXPERIMENTAL=yamlplus \
 		-v ${DEFS}:/defs \
 		-v ${REPO}:/repo \
@@ -39,6 +40,7 @@ build-in-container:
 manifest-in-container:
 	@sudo podman run --pull=newer \
 		--privileged \
+		--rm \
 		-e IMAGE_BUILDER_EXPERIMENTAL=yamlplus \
 		-v ${DEFS}:/defs \
 		-v ${REPO}:/repo \
