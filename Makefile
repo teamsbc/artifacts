@@ -29,7 +29,7 @@ build-in-container:
 		-v ${DEFS}:/defs \
 		-v ${REPO}:/repo \
 		-v .:/output:rw \
-		ghcr.io/osbuild/image-builder-cli:latest \
+		ghcr.io/osbuild/image-builder:latest \
 		--force-repo-dir=/repo \
 		--force-defs-dir=/defs \
 		build \
@@ -45,7 +45,7 @@ manifest-in-container:
 		-v ${DEFS}:/defs \
 		-v ${REPO}:/repo \
 		-v .:/output:rw \
-		ghcr.io/osbuild/image-builder-cli:latest \
+		ghcr.io/osbuild/image-builder:latest \
 		--force-repo-dir=/repo \
 		--force-defs-dir=/defs \
 		manifest --arch aarch64 \

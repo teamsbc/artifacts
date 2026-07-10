@@ -75,7 +75,7 @@ jobs:
           -v $LATEST:/output:Z \
           -v ./data:/data:Z \
           -e IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=/data/defs \
-          ghcr.io/osbuild/image-builder-cli:latest \
+          ghcr.io/osbuild/image-builder:latest \
             --progress=verbose \
             --force-repo-dir=/data/repo \
             build \
