@@ -1,6 +1,11 @@
 ---
+shared: &shared
+  align_footer: true
+  
+
 virt: &virt
   x86_64:
+    <<: *shared
     type: "gpt"
     partitions:
       - !xref "library/disk/partitions.yaml#esp"
@@ -9,6 +14,7 @@ virt: &virt
         type: !xref "library/dps.yaml#root_x86_64"
 
   aarch64:
+    <<: *shared
     type: "gpt"
     partitions:
       - !xref "library/disk/partitions.yaml#esp"
@@ -17,6 +23,7 @@ virt: &virt
 
 rpi: &rpi
   aarch64:
+    <<: *shared
     type: "gpt"
     partitions:
       - <<: !xref "library/disk/partitions.yaml#esp"
