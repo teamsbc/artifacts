@@ -24,6 +24,17 @@ standard: &standard
     - "teamsbc-release-standard"
     - "teamsbc-config-standard"
 
+makalu: &makalu
+  include:
+    - "teamsbc-release-makalu"
+    - "teamsbc-config-makalu"
+    # TODO, do we really want this here? We should probably go full sysupdate
+    # TODO, or such and not have any "build" dependencies here.
+    - "systemd-ukify"
+    # TODO, we need `objcopy` since in a UKI layout dracut wants to use it; but
+    # TODO, it doesn't depend on it?
+    - "binutils"
+
 wifi: &wifi
   include:
     - "wpa_supplicant"
