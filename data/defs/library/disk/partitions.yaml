@@ -8,6 +8,14 @@ esp: &esp
     mountpoint: "/boot"
     label: "ESP"
 
+usr: &usr
+  size: "4 GiB"
+  payload_type: "filesystem"
+  payload:
+    type: "ext4"
+    label: "usr"
+    mountpoint: "/usr"
+
 root: &root
   size: "6 GiB"
   attrs:

@@ -22,6 +22,29 @@ virt: &virt
       - <<: !xref "library/disk/partitions.yaml#root"
         type: !xref "library/dps.yaml#root_aarch64"
 
+makalu: &makalu
+  x86_64:
+    <<: *shared
+    type: "gpt"
+    partitions:
+      - !xref "library/disk/partitions.yaml#esp"
+      - <<: !xref "library/disk/partitions.yaml#usr"
+        size: "2 GiB"
+        type: !xref "library/dps.yaml#usr_x86_64"
+      - <<: !xref "library/disk/partitions.yaml#root"
+        size: "2 GiB"
+        type: !xref "library/dps.yaml#root_x86_64"
+
+  aarch64:
+    <<: *shared
+    type: "gpt"
+    partitions:
+      - !xref "library/disk/partitions.yaml#esp"
+      - <<: !xref "library/disk/partitions.yaml#usr"
+        type: !xref "library/dps.yaml#usr_aarch64"
+      - <<: !xref "library/disk/partitions.yaml#root"
+        type: !xref "library/dps.yaml#root_aarch64"
+
 rpi: &rpi
   aarch64:
     <<: *shared
