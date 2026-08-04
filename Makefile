@@ -1,5 +1,5 @@
 VERSION := 45
-TYPE    := standard-virt
+TYPE    := lhotse-virt
 
 DEFS := $(PWD)/data/defs
 REPO := $(PWD)/data/repo

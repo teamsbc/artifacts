@@ -1,5 +1,5 @@
 ---
-standard: &standard
+lhotse: &lhotse
   filename: "disk.raw.xz"
   compression: "xz"
   mime_type: "application/xz"

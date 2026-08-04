@@ -1,12 +1,12 @@
 ---
 image_types:
-  "standard-rpi4":
-    <<: !xref "library/defaults/disk.yaml#standard"
+  "lhotse-rpi4":
+    <<: !xref "library/defaults/disk.yaml#lhotse"
     partition_table: !xref "library/disk/tables.yaml#rpi"
     platforms:
       - !xref "library/platforms.yaml#aarch64_uefi_rpi4"
     package_sets:
       os:
         - !xref "library/packages.yaml#core"
-        - !xref "library/packages.yaml#standard"
+        - !xref "library/packages.yaml#lhotse"
         - !xref "library/packages.yaml#wifi"

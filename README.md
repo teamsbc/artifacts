@@ -17,25 +17,25 @@ Direct links to the latest builds of TeamSBC artifacts. Grouped by the Fedora ve
 
 #### x86_64
 
-- [standard-virt](https://artifacts.teamsbc.net/main/latest/44/x86_64/teamsbc-44-standard-virt-x86_64.raw.xz)
+- [lhotse-virt](https://artifacts.teamsbc.net/main/latest/44/x86_64/teamsbc-44-lhotse-virt-x86_64.raw.xz)
 
 #### aarch64
 
-- [standard-virt](https://artifacts.teamsbc.net/main/latest/44/aarch64/teamsbc-44-standard-virt-aarch64.raw.xz)
-- [standard-rpi4](https://artifacts.teamsbc.net/main/latest/44/aarch64/teamsbc-44-standard-rpi4-aarch64.raw.xz)
-- [standard-rpi5](https://artifacts.teamsbc.net/main/latest/44/aarch64/teamsbc-44-standard-rpi5-aarch64.raw.xz)
+- [lhotse-virt](https://artifacts.teamsbc.net/main/latest/44/aarch64/teamsbc-44-lhotse-virt-aarch64.raw.xz)
+- [lhotse-rpi4](https://artifacts.teamsbc.net/main/latest/44/aarch64/teamsbc-44-lhotse-rpi4-aarch64.raw.xz)
+- [lhotse-rpi5](https://artifacts.teamsbc.net/main/latest/44/aarch64/teamsbc-44-lhotse-rpi5-aarch64.raw.xz)
 
 ### TeamSBC 45
 
 #### x86_64
 
-- [standard-virt](https://artifacts.teamsbc.net/main/latest/45/x86_64/teamsbc-45-standard-virt-x86_64.raw.xz)
+- [lhotse-virt](https://artifacts.teamsbc.net/main/latest/45/x86_64/teamsbc-45-lhotse-virt-x86_64.raw.xz)
 
 #### aarch64
 
-- [standard-virt](https://artifacts.teamsbc.net/main/latest/45/aarch64/teamsbc-45-standard-virt-aarch64.raw.xz)
-- [standard-rpi4](https://artifacts.teamsbc.net/main/latest/45/aarch64/teamsbc-45-standard-rpi4-aarch64.raw.xz)
-- [standard-rpi5](https://artifacts.teamsbc.net/main/latest/45/aarch64/teamsbc-45-standard-rpi5-aarch64.raw.xz)
+- [lhotse-virt](https://artifacts.teamsbc.net/main/latest/45/aarch64/teamsbc-45-lhotse-virt-aarch64.raw.xz)
+- [lhotse-rpi4](https://artifacts.teamsbc.net/main/latest/45/aarch64/teamsbc-45-lhotse-rpi4-aarch64.raw.xz)
+- [lhotse-rpi5](https://artifacts.teamsbc.net/main/latest/45/aarch64/teamsbc-45-lhotse-rpi5-aarch64.raw.xz)
 
 ## Building
 
@@ -48,9 +48,9 @@ You can build artifacts locally using the provided `Makefile` in this repository
 ### Build
 
 ```
-make build-in-container DISTRO=44 TYPE=standard-virt
+make build-in-container DISTRO=44 TYPE=lhotse-virt
 ```
 
-Will build a TeamSBC Remix, Fedora 44 based `standard-virt` artifact. Since TeamSBC often uses the latest features of `image-builder` there's a chance that they might not yet be in a released version hence the default suggestion here is to build with the upstream container.
+Will build a TeamSBC Remix, Fedora 44 based `lhotse-virt` artifact. Since TeamSBC often uses the latest features of `image-builder` there's a chance that they might not yet be in a released version hence the default suggestion here is to build with the upstream container.
 
 If you don't or can't use containers you can replace `build-in-container` with `build` and your locally installed `image-builder` version will be used.

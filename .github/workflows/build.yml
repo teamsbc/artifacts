@@ -18,7 +18,7 @@ jobs:
             version: 44
             arch: x86_64
             runner: ubuntu-latest
-            type: standard-virt
+            type: lhotse-virt
           - distro: fedora
             version: 44
             arch: x86_64
@@ -28,22 +28,22 @@ jobs:
             version: 44
             arch: aarch64
             runner: ubuntu-24.04-arm
-            type: standard-virt
+            type: lhotse-virt
           - distro: fedora
             version: 44
             arch: aarch64
             runner: ubuntu-24.04-arm
-            type: standard-rpi4
+            type: lhotse-rpi4
           - distro: fedora
             version: 44
             arch: aarch64
             runner: ubuntu-24.04-arm
-            type: standard-rpi5
+            type: lhotse-rpi5
           - distro: fedora
             version: 45
             arch: x86_64
             runner: ubuntu-latest
-            type: standard-virt
+            type: lhotse-virt
           - distro: fedora
             version: 45
             arch: x86_64
@@ -53,17 +53,17 @@ jobs:
             version: 45
             arch: aarch64
             runner: ubuntu-24.04-arm
-            type: standard-virt
+            type: lhotse-virt
           - distro: fedora
             version: 45
             arch: aarch64
             runner: ubuntu-24.04-arm
-            type: standard-rpi4
+            type: lhotse-rpi4
           - distro: fedora
             version: 45
             arch: aarch64
             runner: ubuntu-24.04-arm
-            type: standard-rpi5
+            type: lhotse-rpi5
     runs-on: ${{ matrix.build.runner }}
     steps:
       - name: "Checkout Code"

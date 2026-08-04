@@ -19,10 +19,10 @@ core: &core
     - "kmscon"
     - "sudo"
 
-standard: &standard
+lhotse: &lhotse
   include:
-    - "teamsbc-release-standard"
-    - "teamsbc-config-standard"
+    - "teamsbc-release-lhotse"
+    - "teamsbc-config-lhotse"
 
 makalu: &makalu
   include:

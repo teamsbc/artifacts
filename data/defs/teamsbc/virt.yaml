@@ -1,7 +1,7 @@
 ---
 image_types:
-  "standard-virt":
-    <<: !xref "library/defaults/disk.yaml#standard"
+  "lhotse-virt":
+    <<: !xref "library/defaults/disk.yaml#lhotse"
     partition_table: !xref "library/disk/tables.yaml#virt"
     platforms:
       - !xref "library/platforms.yaml#x86_64_uefi"
@@ -9,10 +9,10 @@ image_types:
     package_sets:
       os:
         - !xref "library/packages.yaml#core"
-        - !xref "library/packages.yaml#standard"
+        - !xref "library/packages.yaml#lhotse"
 
   "makalu-virt":
-    <<: !xref "library/defaults/disk.yaml#standard"
+    <<: !xref "library/defaults/disk.yaml#lhotse"
     partition_table: !xref "library/disk/tables.yaml#makalu"
     required_partition_sizes:
       "/": "2 GiB"
