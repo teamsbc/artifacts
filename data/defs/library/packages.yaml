@@ -34,6 +34,11 @@ makalu: &makalu
     # TODO, we need `objcopy` since in a UKI layout dracut wants to use it; but
     # TODO, it doesn't depend on it?
     - "binutils"
+  exclude:
+    # TODO, look into the dependency chain that pulls these in
+    - "dnf5"
+    - "dnf5-plugins"
+    - "rpm"
 
 wifi: &wifi
   include:
