@@ -77,6 +77,10 @@ jobs:
           sudo mkdir -p $LATEST/meta
           echo "LATEST=$LATEST" >> $GITHUB_ENV
           echo "DATED=$DATED" >> $GITHUB_ENV
+      # Workaround: https://github.com/actions/runner-images/issues/14473
+      - name: "Fix podman crun resolution"
+        run: |
+          ( echo '[engine.runtimes]' ; echo 'crun = [ "/usr/local/bin/crun" ]' ) | sudo tee /etc/containers/containers.conf
       - name: "Build"
         env:
           LATEST: /artifacts/${{ github.ref_name }}/latest/${{ matrix.build.version }}/${{ matrix.build.arch }}/
