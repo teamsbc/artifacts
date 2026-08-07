@@ -67,7 +67,37 @@ x86_64:
     check_gpg: true
   - name: teamsbc-common
     baseurl: https://packages.teamsbc.net/main/latest/44/x86_64/common
-    check_gpg: false 
+    gpgkey: |
+      -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+      mQINBGp1YKABEAC2l2GjHdpM5N9R20GoUK+73/b0Y5DQ2ceN1DhkzmabSyKxhdPU
+      tHSbxp/fp5I0mI+Lmowccyk5mw42UVRjAJcFAPNGjUsE6LWvbotz+cGlRWb1p79P
+      LB7HPjo2fetF4ULQGEnKi3UE7TeiiwCnVIZxbeGOFhwgXReCnNkFzg66QWlGH2R4
+      wW59D2ASvbxWj8U/OVG4TeePqOxCPjx/r8nsUEDYvR3J9zmZ6MkPE9M3WhGZ98g7
+      ZZR6TqEXc1K8j1++bm14rahinFp2RNQJilq6Xx7VS+wtVj42gjhtTVxCgEYVivgO
+      vAQevxvsusFXxhDcqwTXpo2PmuR3kej5+uvua2zh4UiauI01QJhJ/fW3w6VkTFcQ
+      PO9pBLDciQgt+sdef2maynAcnfFmKw1n1OEJbZWdUwXZIKvGOSFGa9c/aceifDeP
+      CcYDIeoXu8FguH924kK+apMjok2SglYYCMoiAmtTUaprC+NWL/l9XTyIfu75UFQQ
+      N2TWhdlVp+cA3kq6iMLqwwha8ev3M7Gd2R96wA0tEoQvbmn3qKUljb6wCbpcHH8y
+      nZcu9HwuNjliP+ne4DjKeLlZJffvFl/mTm2pQO7Brwr34XRUpSHPt2YDpbCe2F2J
+      o+KoZzH4MbDH5CtKft//+YQKhg02vJ5OogOKWZtZLgvOqenT6UYiPhxbqQARAQAB
+      tB1UZWFtU0JDIDxzaWduaW5nQHRlYW1zYmMub3JnPokCUQQTAQoAOxYhBMFxlOMr
+      kUiE3rvyUMVfOsT9P4t1BQJqdWCgAhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4H
+      AheAAAoJEMVfOsT9P4t1ANAP/1VzYD+NeYnMzgPW783jVruYZhvY+AgJyWiqiKNz
+      JqUGrTuD91Pxar6lYzFDnURQdBCcsKR1E4T41agMRMKCH/jV/DEvJhzF0YQ+59C3
+      OV6N3H/vndLbwJZnxWmqqkLNXhn8eaFWA4UdNpdq/NqgBTF5nNEWtrYd1AT+hJn5
+      XB7NKuVbyViWV/CyABz8N998I6WhriD33pA/7o67qjgF61sK4FnXO49rTyEd/YiF
+      ouniBxlF3giWGE3TfauzYxiNC0ibg2cWJp6NROHomvPepyVW/oKdIIMJAKtWhzCJ
+      Q69nX6aLsyOIpEbuLKpGHe5JtMj0nXKNdfQQPGq76D6OV4ey0v6K4HW1qXFsSmME
+      M0XDnz3WVYqoALcwP8nLfKGYEFdNftc/8ZUYfXJwSS1y0TzTklT8Z1t3ZxcyWPne
+      MGyl8eSjqEs9ws/G2O0VpaIlH2Rr96DgC5jEXaOtrAzV1PF2eQR0VQ3GEa12xS60
+      BWwJziEabx5+Jyhxrj29MJLEOAXJXDgiyuSyAnPRlz/tY0DjN5E3MGjdi9NFHHtO
+      HEljFOPaEPGi2NFbsehJdO9daIzSRsOTYDDfQVWNjy6nMms6MwQYOk6qYDasQ40g
+      DtEo2F7k4FZLZcFMxKdAtw0uYYG9vvdh9Y+gWvybSskFnIyxvLaWG52Gjr5Tn3Dn
+      z65x
+      =Sv6O
+      -----END PGP PUBLIC KEY BLOCK-----
+    check_gpg: true
 aarch64:
   - name: fedora
     metalink: https://mirrors.fedoraproject.org/metalink?repo=fedora-44&arch=aarch64
@@ -135,6 +165,36 @@ aarch64:
       =1m7R
       -----END PGP PUBLIC KEY BLOCK-----
     check_gpg: true
-  - name: "teamsbc-common"
-    baseurl: "https://packages.teamsbc.net/main/latest/44/x86_64/common"
-    check_gpg: false
+  - name: teamsbc-common
+    baseurl: https://packages.teamsbc.net/main/latest/44/x86_64/common
+    gpgkey: |
+      -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+      mQINBGp1YKABEAC2l2GjHdpM5N9R20GoUK+73/b0Y5DQ2ceN1DhkzmabSyKxhdPU
+      tHSbxp/fp5I0mI+Lmowccyk5mw42UVRjAJcFAPNGjUsE6LWvbotz+cGlRWb1p79P
+      LB7HPjo2fetF4ULQGEnKi3UE7TeiiwCnVIZxbeGOFhwgXReCnNkFzg66QWlGH2R4
+      wW59D2ASvbxWj8U/OVG4TeePqOxCPjx/r8nsUEDYvR3J9zmZ6MkPE9M3WhGZ98g7
+      ZZR6TqEXc1K8j1++bm14rahinFp2RNQJilq6Xx7VS+wtVj42gjhtTVxCgEYVivgO
+      vAQevxvsusFXxhDcqwTXpo2PmuR3kej5+uvua2zh4UiauI01QJhJ/fW3w6VkTFcQ
+      PO9pBLDciQgt+sdef2maynAcnfFmKw1n1OEJbZWdUwXZIKvGOSFGa9c/aceifDeP
+      CcYDIeoXu8FguH924kK+apMjok2SglYYCMoiAmtTUaprC+NWL/l9XTyIfu75UFQQ
+      N2TWhdlVp+cA3kq6iMLqwwha8ev3M7Gd2R96wA0tEoQvbmn3qKUljb6wCbpcHH8y
+      nZcu9HwuNjliP+ne4DjKeLlZJffvFl/mTm2pQO7Brwr34XRUpSHPt2YDpbCe2F2J
+      o+KoZzH4MbDH5CtKft//+YQKhg02vJ5OogOKWZtZLgvOqenT6UYiPhxbqQARAQAB
+      tB1UZWFtU0JDIDxzaWduaW5nQHRlYW1zYmMub3JnPokCUQQTAQoAOxYhBMFxlOMr
+      kUiE3rvyUMVfOsT9P4t1BQJqdWCgAhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4H
+      AheAAAoJEMVfOsT9P4t1ANAP/1VzYD+NeYnMzgPW783jVruYZhvY+AgJyWiqiKNz
+      JqUGrTuD91Pxar6lYzFDnURQdBCcsKR1E4T41agMRMKCH/jV/DEvJhzF0YQ+59C3
+      OV6N3H/vndLbwJZnxWmqqkLNXhn8eaFWA4UdNpdq/NqgBTF5nNEWtrYd1AT+hJn5
+      XB7NKuVbyViWV/CyABz8N998I6WhriD33pA/7o67qjgF61sK4FnXO49rTyEd/YiF
+      ouniBxlF3giWGE3TfauzYxiNC0ibg2cWJp6NROHomvPepyVW/oKdIIMJAKtWhzCJ
+      Q69nX6aLsyOIpEbuLKpGHe5JtMj0nXKNdfQQPGq76D6OV4ey0v6K4HW1qXFsSmME
+      M0XDnz3WVYqoALcwP8nLfKGYEFdNftc/8ZUYfXJwSS1y0TzTklT8Z1t3ZxcyWPne
+      MGyl8eSjqEs9ws/G2O0VpaIlH2Rr96DgC5jEXaOtrAzV1PF2eQR0VQ3GEa12xS60
+      BWwJziEabx5+Jyhxrj29MJLEOAXJXDgiyuSyAnPRlz/tY0DjN5E3MGjdi9NFHHtO
+      HEljFOPaEPGi2NFbsehJdO9daIzSRsOTYDDfQVWNjy6nMms6MwQYOk6qYDasQ40g
+      DtEo2F7k4FZLZcFMxKdAtw0uYYG9vvdh9Y+gWvybSskFnIyxvLaWG52Gjr5Tn3Dn
+      z65x
+      =Sv6O
+      -----END PGP PUBLIC KEY BLOCK-----
+    check_gpg: true
