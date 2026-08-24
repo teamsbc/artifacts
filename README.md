@@ -13,18 +13,6 @@ For more information about how to use these artifacts and what they contain you 
 
 Direct links to the latest builds of TeamSBC artifacts. Grouped by the Fedora version they are based on, and architecture. Named by the TeamSBC variant. You can also [browse artifacts](https://artifacts.teamsbc.net/index.html) on our artifacts storage.
 
-### TeamSBC 44
-
-#### x86_64
-
-- [lhotse-virt](https://artifacts.teamsbc.net/main/latest/44/x86_64/teamsbc-44-lhotse-virt-x86_64.raw.xz)
-
-#### aarch64
-
-- [lhotse-virt](https://artifacts.teamsbc.net/main/latest/44/aarch64/teamsbc-44-lhotse-virt-aarch64.raw.xz)
-- [lhotse-rpi4](https://artifacts.teamsbc.net/main/latest/44/aarch64/teamsbc-44-lhotse-rpi4-aarch64.raw.xz)
-- [lhotse-rpi5](https://artifacts.teamsbc.net/main/latest/44/aarch64/teamsbc-44-lhotse-rpi5-aarch64.raw.xz)
-
 ### TeamSBC 45
 
 #### x86_64
@@ -36,6 +24,18 @@ Direct links to the latest builds of TeamSBC artifacts. Grouped by the Fedora ve
 - [lhotse-virt](https://artifacts.teamsbc.net/main/latest/45/aarch64/teamsbc-45-lhotse-virt-aarch64.raw.xz)
 - [lhotse-rpi4](https://artifacts.teamsbc.net/main/latest/45/aarch64/teamsbc-45-lhotse-rpi4-aarch64.raw.xz)
 - [lhotse-rpi5](https://artifacts.teamsbc.net/main/latest/45/aarch64/teamsbc-45-lhotse-rpi5-aarch64.raw.xz)
+
+### TeamSBC 46
+
+#### x86_64
+
+- [lhotse-virt](https://artifacts.teamsbc.net/main/latest/46/x86_64/teamsbc-46-lhotse-virt-x86_64.raw.xz)
+
+#### aarch64
+
+- [lhotse-virt](https://artifacts.teamsbc.net/main/latest/46/aarch64/teamsbc-46-lhotse-virt-aarch64.raw.xz)
+- [lhotse-rpi4](https://artifacts.teamsbc.net/main/latest/46/aarch64/teamsbc-46-lhotse-rpi4-aarch64.raw.xz)
+- [lhotse-rpi5](https://artifacts.teamsbc.net/main/latest/46/aarch64/teamsbc-46-lhotse-rpi5-aarch64.raw.xz)
 
 ## Building
 
