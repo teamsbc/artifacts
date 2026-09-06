@@ -23,16 +23,7 @@ aarch64_uefi: &aarch64_uefi
 
 aarch64_uefi_rpi: &aarch64_uefi_rpi
   <<: *aarch64_uefi
-  packages:
-    <<: *aarch64_uefi_packages
-    firmware:
-      - "brcmfmac-firmware"
   build_packages:
-    # some firmware packages can be quite large and don't offer update
-    # functionality. let's not have them installed in the image by default
-    # but instead users can later install them if they wish to update.
-    uboot:
-      - "uboot-images-armv8"
     # other firmware packages are problematic because they use `%{efi_` macros
     # which are expanded at build time and hardcode to /boot/efi. this leads to
     # all sorts of issues [1] so we install them in the buildroot and copy the
@@ -46,11 +37,15 @@ aarch64_uefi_rpi: &aarch64_uefi_rpi
 
 aarch64_uefi_rpi4: &aarch64_uefi_rpi4
   <<: *aarch64_uefi_rpi
+  packages:
+    <<: *aarch64_uefi_packages
+    uboot:
+      - "teamsbc-uboot-rpi4"
   boot_files:
-    # copy over the rpi specific u-boot
-    - src: "/usr/share/uboot/rpi_arm64/u-boot.bin"
+    # copy over the rpi specific u-boot which *isn'*t in the build
+    # pipeline
+    - src: "/usr/share/teamsbc-uboot/rpi4/u-boot.bin"
       dst: "/boot/rpi-u-boot.bin"
-      from_build: true
     # copy over the general rpi files from bcm283x-firmware
     - src: "/boot/efi/config.txt"
       dst: "/boot/config.txt"
@@ -103,14 +98,17 @@ aarch64_uefi_rpi4: &aarch64_uefi_rpi4
       dst: "/boot/bcm2711-rpi-cm4s.dtb"
       from_build: true
 
-
 aarch64_uefi_rpi5: &aarch64_uefi_rpi5
   <<: *aarch64_uefi_rpi
+  packages:
+    <<: *aarch64_uefi_packages
+    uboot:
+      - "teamsbc-uboot-rpi5"
   boot_files:
-    # copy over the rpi specific u-boot
-    - src: "/usr/share/uboot/rpi_arm64/u-boot.bin"
+    # copy over the rpi specific u-boot which *isn'*t in the build
+    # pipeline
+    - src: "/usr/share/teamsbc-uboot/rpi5/u-boot.bin"
       dst: "/boot/rpi-u-boot.bin"
-      from_build: true
     # copy over the general rpi files from bcm283x-firmware
     - src: "/boot/efi/config.txt"
       dst: "/boot/config.txt"
