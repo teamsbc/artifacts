@@ -40,6 +40,11 @@ jobs:
             runner: ubuntu-24.04-arm
             type: lhotse-rpi5
           - distro: fedora
+            version: 45
+            arch: aarch64
+            runner: ubuntu-24.04-arm
+            type: makalu-rpi4
+          - distro: fedora
             version: 46
             arch: x86_64
             runner: ubuntu-latest
@@ -64,6 +69,11 @@ jobs:
             arch: aarch64
             runner: ubuntu-24.04-arm
             type: lhotse-rpi5
+          - distro: fedora
+            version: 46
+            arch: aarch64
+            runner: ubuntu-24.04-arm
+            type: makalu-rpi4
     runs-on: ${{ matrix.build.runner }}
     steps:
       - name: "Checkout Code"
