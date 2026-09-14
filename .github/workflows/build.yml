@@ -13,76 +13,23 @@ jobs:
   build-artifacts:
     strategy:
       matrix:
+        version: [45, 46]
         build:
-          - distro: fedora
-            version: 45
-            arch: x86_64
-            runner: ubuntu-latest
-            type: lhotse-virt
-          - distro: fedora
-            version: 45
-            arch: x86_64
-            runner: ubuntu-latest
-            type: makalu-virt
-          - distro: fedora
-            version: 45
-            arch: aarch64
-            runner: ubuntu-24.04-arm
-            type: lhotse-virt
-          - distro: fedora
-            version: 45
-            arch: aarch64
-            runner: ubuntu-24.04-arm
-            type: lhotse-rpi4
-          - distro: fedora
-            version: 45
-            arch: aarch64
-            runner: ubuntu-24.04-arm
-            type: lhotse-rpi5
-          - distro: fedora
-            version: 45
-            arch: aarch64
-            runner: ubuntu-24.04-arm
-            type: makalu-rpi4
-          - distro: fedora
-            version: 46
-            arch: x86_64
-            runner: ubuntu-latest
-            type: lhotse-virt
-          - distro: fedora
-            version: 46
-            arch: x86_64
-            runner: ubuntu-latest
-            type: makalu-virt
-          - distro: fedora
-            version: 46
-            arch: aarch64
-            runner: ubuntu-24.04-arm
-            type: lhotse-virt
-          - distro: fedora
-            version: 46
-            arch: aarch64
-            runner: ubuntu-24.04-arm
-            type: lhotse-rpi4
-          - distro: fedora
-            version: 46
-            arch: aarch64
-            runner: ubuntu-24.04-arm
-            type: lhotse-rpi5
-          - distro: fedora
-            version: 46
-            arch: aarch64
-            runner: ubuntu-24.04-arm
-            type: makalu-rpi4
-    runs-on: ${{ matrix.build.runner }}
+          - { type: lhotse-virt, arch: x86_64 }
+          - { type: makalu-virt, arch: x86_64 }
+          - { type: lhotse-virt, arch: aarch64 }
+          - { type: lhotse-rpi4, arch: aarch64 }
+          - { type: lhotse-rpi5, arch: aarch64 }
+          - { type: makalu-rpi4, arch: aarch64 }
+    runs-on: ${{ matrix.build.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     steps:
       - name: "Checkout Code"
         uses: actions/checkout@v6
       - name: "Setup"
         env:
-          LATEST: /artifacts/${{ github.ref_name }}/latest/${{ matrix.build.version }}/${{ matrix.build.arch }}/
+          LATEST: /artifacts/${{ github.ref_name }}/latest/${{ matrix.version }}/${{ matrix.build.arch }}/
         run: |
-          DATED=/artifacts/${{ github.ref_name }}/$(date +%Y.%m.%d)/${{ matrix.build.version }}/${{ matrix.build.arch }}/
+          DATED=/artifacts/${{ github.ref_name }}/$(date +%Y.%m.%d)/${{ matrix.version }}/${{ matrix.build.arch }}/
           sudo mkdir -p $LATEST $DATED
           sudo mkdir -p $LATEST/meta
           echo "LATEST=$LATEST" >> $GITHUB_ENV
@@ -92,8 +39,6 @@ jobs:
         run: |
           ( echo '[engine.runtimes]' ; echo 'crun = [ "/usr/local/bin/crun" ]' ) | sudo tee /etc/containers/containers.conf
       - name: "Build"
-        env:
-          LATEST: /artifacts/${{ github.ref_name }}/latest/${{ matrix.build.version }}/${{ matrix.build.arch }}/
         run: |
           sudo podman run --rm --privileged \
           -v $LATEST:/output:Z \
@@ -104,7 +49,7 @@ jobs:
             --force-repo-dir=/data/repo \
             build \
             --output-dir /output \
-            --distro teamsbc-${{ matrix.build.version }} \
+            --distro teamsbc-${{ matrix.version }} \
             --with-manifest \
             ${{ matrix.build.type }}
           ls -larth $LATEST
