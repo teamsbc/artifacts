@@ -1,12 +1,13 @@
-VERSION := 46
-TYPE    := lhotse-virt
+VERSION       := 46
+TYPE          := lhotse-virt
+IMAGE_VERSION := $(VERSION).$(shell date +%Y%m%d).0
 
 DEFS := $(PWD)/data/defs
 REPO := $(PWD)/data/repo
 
 .PHONY: build
 build:
-	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus image-builder \
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus,image-id=$(TYPE),image-version=$(IMAGE_VERSION) image-builder \
 		--force-repo-dir=$(REPO) \
 		--force-defs-dir=$(DEFS) \
 		build \
@@ -14,7 +15,7 @@ build:
 
 .PHONY: manifest
 manifest:
-	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus image-builder \
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus,image-id=$(TYPE),image-version=$(IMAGE_VERSION) image-builder \
 		--force-repo-dir=$(REPO) \
 		--force-repo-dir=$(DEFS) \
 		manifest \
@@ -25,7 +26,7 @@ build-in-container:
 	@sudo podman run --pull=newer \
 		--privileged \
 		--rm \
-		-e IMAGE_BUILDER_EXPERIMENTAL=yamlplus \
+		-e IMAGE_BUILDER_EXPERIMENTAL=yamlplus,image-id=$(TYPE),image-version=$(IMAGE_VERSION) \
 		-v ${DEFS}:/defs \
 		-v ${REPO}:/repo \
 		-v .:/output:rw \
@@ -41,7 +42,7 @@ manifest-in-container:
 	@sudo podman run --pull=newer \
 		--privileged \
 		--rm \
-		-e IMAGE_BUILDER_EXPERIMENTAL=yamlplus \
+		-e IMAGE_BUILDER_EXPERIMENTAL=yamlplus,image-id=$(TYPE),image-version=$(IMAGE_VERSION) \
 		-v ${DEFS}:/defs \
 		-v ${REPO}:/repo \
 		-v .:/output:rw \
@@ -53,7 +54,7 @@ manifest-in-container:
 
 .PHONY: list
 list:
-	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus image-builder \
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus,image-id=$(TYPE),image-version=$(IMAGE_VERSION) image-builder \
 		--force-repo-dir=$(REPO) \
 		--force-defs-dir=$(DEFS) \
 		list
