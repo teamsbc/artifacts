@@ -29,11 +29,13 @@ jobs:
         env:
           LATEST: /artifacts/${{ github.ref_name }}/latest/${{ matrix.version }}/${{ matrix.build.arch }}/
         run: |
+          IMAGE_VERSION="${{ matrix.version }}.$(date +%Y%m%d).0"
           DATED=/artifacts/${{ github.ref_name }}/$(date +%Y.%m.%d)/${{ matrix.version }}/${{ matrix.build.arch }}/
           sudo mkdir -p $LATEST $DATED
           sudo mkdir -p $LATEST/meta
           echo "LATEST=$LATEST" >> $GITHUB_ENV
           echo "DATED=$DATED" >> $GITHUB_ENV
+          echo "IMAGE_VERSION=$IMAGE_VERSION" >> $GITHUB_ENV
       # Workaround: https://github.com/actions/runner-images/issues/14473
       - name: "Fix podman crun resolution"
         run: |
@@ -43,7 +45,7 @@ jobs:
           sudo podman run --rm --privileged \
           -v $LATEST:/output:Z \
           -v ./data:/data:Z \
-          -e IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=/data/defs \
+          -e IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=/data/defs,image-id=${{ matrix.build.type }},image-version=$IMAGE_VERSION \
           ghcr.io/osbuild/image-builder:latest \
             --progress=verbose \
             --force-repo-dir=/data/repo \
