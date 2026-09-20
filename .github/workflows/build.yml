@@ -58,6 +58,9 @@ jobs:
       - name: "Move metadata"
         run: |
           sudo mv $LATEST/*.json $LATEST/meta/
+      - name: "Generate checksums"
+        run: |
+          sudo find $LATEST -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
       - name: "Copy to dated directory"
         run: |
           sudo cp -vra $LATEST/* $DATED/
