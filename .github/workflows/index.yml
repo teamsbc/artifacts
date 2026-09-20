@@ -25,7 +25,8 @@ jobs:
           go run github.com/teamsbc/s3-directory-listing/cmd/s3-directory-listing@latest create \
             teamsbc-artifacts \
             s3-index-template/default.html \
-            -o /tmp/output
+            -o /tmp/output \
+            --sha256sums
       - name: "Upload"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
