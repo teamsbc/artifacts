@@ -27,6 +27,12 @@ jobs:
             s3-index-template/default.html \
             -o /tmp/output \
             --sha256sums
+      - name: "Sign"
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        run: |
+          gpg --batch --import <<<"$GPG_PRIVATE_KEY"
+          find /tmp/output -name SHA256SUMS -exec gpg --batch --detach-sign {} \;
       - name: "Upload"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
