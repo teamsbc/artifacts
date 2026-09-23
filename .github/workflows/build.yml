@@ -13,7 +13,7 @@ jobs:
   build-artifacts:
     strategy:
       matrix:
-        version: [45, 46]
+        version: [46]
         build:
           - { type: lhotse-virt, arch: x86_64 }
           - { type: makalu-virt, arch: x86_64 }
