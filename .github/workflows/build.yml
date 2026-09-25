@@ -28,18 +28,16 @@ jobs:
       - name: "Setup"
         env:
           LATEST: /artifacts/${{ github.ref_name }}/latest/${{ matrix.version }}/${{ matrix.build.arch }}/
-          UPDATES_LATEST: /updates/${{ github.ref_name }}/latest/${{ matrix.version }}/${{ matrix.build.arch }}/
+          UPDATES: /updates/${{ github.ref_name }}/${{ matrix.version }}/${{ matrix.build.arch }}/${{ matrix.build.type }}/
         run: |
           IMAGE_VERSION="${{ matrix.version }}.$(date +%Y%m%d).0"
           DATED=/artifacts/${{ github.ref_name }}/$(date +%Y.%m.%d)/${{ matrix.version }}/${{ matrix.build.arch }}/
-          UPDATES_DATED=/updates/${{ github.ref_name }}/$(date +%Y.%m.%d)/${{ matrix.version }}/${{ matrix.build.arch }}/
           sudo mkdir -p $LATEST $DATED
           sudo mkdir -p $LATEST/meta
-          sudo mkdir -p $UPDATES_LATEST $UPDATES_DATED
+          sudo mkdir -p $UPDATES
           echo "LATEST=$LATEST" >> $GITHUB_ENV
           echo "DATED=$DATED" >> $GITHUB_ENV
-          echo "UPDATES_LATEST=$UPDATES_LATEST" >> $GITHUB_ENV
-          echo "UPDATES_DATED=$UPDATES_DATED" >> $GITHUB_ENV
+          echo "UPDATES=$UPDATES" >> $GITHUB_ENV
           echo "IMAGE_VERSION=$IMAGE_VERSION" >> $GITHUB_ENV
       # Workaround: https://github.com/actions/runner-images/issues/14473
       - name: "Fix podman crun resolution"
@@ -64,18 +62,17 @@ jobs:
       - name: "Move extras"
         if: startsWith(matrix.build.type, 'makalu')
         run: |
-          sudo mv $LATEST/*pt-usr* $UPDATES_LATEST/
+          sudo mv $LATEST/*pt-usr*.raw.xz $UPDATES/$IMAGE_VERSION.usr.raw.xz
       - name: "Move metadata"
         run: |
           sudo mv $LATEST/*.json $LATEST/meta/
       - name: "Generate checksums"
         run: |
           sudo find $LATEST -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
-          sudo find $UPDATES_LATEST -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
+          sudo find $UPDATES -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
       - name: "Copy to dated directory"
         run: |
           sudo cp -vra $LATEST/* $DATED/
-          sudo cp -vra $UPDATES_LATEST/* $UPDATES_DATED/ 2>/dev/null || true
       - name: "Upload"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
