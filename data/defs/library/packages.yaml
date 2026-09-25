@@ -33,6 +33,9 @@ makalu: &makalu
     - "systemd-ukify"
     # TODO, sd-pull is shipped in systemd-container
     - "systemd-container"
+    # TODO, systemd-container doesn't require gnupg2 but sd-pull tries to execute
+    # TODO, gpg/gpg2 directly
+    - "gnupg2"
     # TODO, we need `objcopy` since in a UKI layout dracut wants to use it; but
     # TODO, it doesn't depend on it?
     - "binutils"
