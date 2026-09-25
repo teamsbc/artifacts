@@ -31,6 +31,8 @@ makalu: &makalu
     # TODO, do we really want this here? We should probably go full sysupdate
     # TODO, or such and not have any "build" dependencies here.
     - "systemd-ukify"
+    # TODO, sd-pull is shipped in systemd-container
+    - "systemd-container"
     # TODO, we need `objcopy` since in a UKI layout dracut wants to use it; but
     # TODO, it doesn't depend on it?
     - "binutils"
