@@ -59,7 +59,10 @@ jobs:
       - name: "Move extras"
         if: startsWith(matrix.build.type, 'makalu')
         run: |
-          sudo mv $ARTIFACTS/*pt-usr*.raw.xz $UPDATES/$IMAGE_VERSION.usr.raw.xz
+          sudo mv $ARTIFACTS/*pt-usr*.raw.xz "$UPDATES/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.usr.raw.xz"
+      - name: "Rename artifact"
+        run: |
+          sudo mv $ARTIFACTS/*.raw.xz "$ARTIFACTS/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.raw.xz"
       - name: "Move metadata"
         run: |
           sudo mv $ARTIFACTS/*.json $ARTIFACTS/meta/
