@@ -66,6 +66,11 @@ jobs:
       - name: "Move metadata"
         run: |
           sudo mv $LATEST/*.json $LATEST/meta/
+      - name: "Copy update metadata"
+        if: startsWith(matrix.build.type, 'makalu')
+        run: |
+          sudo mkdir -p "$UPDATES/meta/$IMAGE_VERSION"
+          sudo cp -a "$LATEST/meta/." "$UPDATES/meta/$IMAGE_VERSION/"
       - name: "Generate checksums"
         run: |
           sudo find $LATEST -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
