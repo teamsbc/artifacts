@@ -27,16 +27,13 @@ jobs:
         uses: actions/checkout@v6
       - name: "Setup"
         env:
-          LATEST: /artifacts/${{ github.ref_name }}/latest/${{ matrix.version }}/${{ matrix.build.arch }}/
+          ARTIFACTS: /artifacts/${{ github.ref_name }}/${{ matrix.version }}/${{ matrix.build.arch }}/teamsbc-${{ matrix.build.type }}/
           UPDATES: /updates/${{ github.ref_name }}/${{ matrix.version }}/${{ matrix.build.arch }}/teamsbc-${{ matrix.build.type }}/
         run: |
           IMAGE_VERSION="${{ matrix.version }}.$(date +%Y%m%d).0"
-          DATED=/artifacts/${{ github.ref_name }}/$(date +%Y.%m.%d)/${{ matrix.version }}/${{ matrix.build.arch }}/
-          sudo mkdir -p $LATEST $DATED
-          sudo mkdir -p $LATEST/meta
+          sudo mkdir -p "$ARTIFACTS/meta"
           sudo mkdir -p $UPDATES
-          echo "LATEST=$LATEST" >> $GITHUB_ENV
-          echo "DATED=$DATED" >> $GITHUB_ENV
+          echo "ARTIFACTS=$ARTIFACTS" >> $GITHUB_ENV
           echo "UPDATES=$UPDATES" >> $GITHUB_ENV
           echo "IMAGE_VERSION=$IMAGE_VERSION" >> $GITHUB_ENV
       # Workaround: https://github.com/actions/runner-images/issues/14473
@@ -46,7 +43,7 @@ jobs:
       - name: "Build"
         run: |
           sudo podman run --rm --privileged \
-          -v $LATEST:/output:Z \
+          -v $ARTIFACTS:/output:Z \
           -v ./data:/data:Z \
           -e IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=/data/defs,image-id=teamsbc-${{ matrix.build.type }},image-version=$IMAGE_VERSION \
           ghcr.io/osbuild/image-builder:latest \
@@ -58,26 +55,23 @@ jobs:
             --with-manifest \
             ${{ startsWith(matrix.build.type, 'makalu') && '--with-extra partition:pt-usr' || '' }} \
             ${{ matrix.build.type }}
-          ls -larth $LATEST
+          ls -larth $ARTIFACTS
       - name: "Move extras"
         if: startsWith(matrix.build.type, 'makalu')
         run: |
-          sudo mv $LATEST/*pt-usr*.raw.xz $UPDATES/$IMAGE_VERSION.usr.raw.xz
+          sudo mv $ARTIFACTS/*pt-usr*.raw.xz $UPDATES/$IMAGE_VERSION.usr.raw.xz
       - name: "Move metadata"
         run: |
-          sudo mv $LATEST/*.json $LATEST/meta/
+          sudo mv $ARTIFACTS/*.json $ARTIFACTS/meta/
       - name: "Copy update metadata"
         if: startsWith(matrix.build.type, 'makalu')
         run: |
           sudo mkdir -p "$UPDATES/meta/$IMAGE_VERSION"
-          sudo cp -a "$LATEST/meta/." "$UPDATES/meta/$IMAGE_VERSION/"
+          sudo cp -a "$ARTIFACTS/meta/." "$UPDATES/meta/$IMAGE_VERSION/"
       - name: "Generate checksums"
         run: |
-          sudo find $LATEST -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
+          sudo find $ARTIFACTS -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
           sudo find $UPDATES -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
-      - name: "Copy to dated directory"
-        run: |
-          sudo cp -vra $LATEST/* $DATED/
       - name: "Upload"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
