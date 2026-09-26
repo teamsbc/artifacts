@@ -53,13 +53,14 @@ jobs:
             --output-dir /output \
             --distro teamsbc-${{ matrix.version }} \
             --with-manifest \
-            ${{ startsWith(matrix.build.type, 'makalu') && '--with-extra partition:pt-usr' || '' }} \
+            ${{ startsWith(matrix.build.type, 'makalu') && '--with-extra partition:pt-usr --with-extra file:uki' || '' }} \
             ${{ matrix.build.type }}
           ls -larth $ARTIFACTS
       - name: "Move extras"
         if: startsWith(matrix.build.type, 'makalu')
         run: |
           sudo mv $ARTIFACTS/*pt-usr*.raw.xz "$UPDATES/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.usr.raw.xz"
+          sudo mv $ARTIFACTS/*uki*.efi "$UPDATES/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.efi"
       - name: "Rename artifact"
         run: |
           sudo mv $ARTIFACTS/*.raw.xz "$ARTIFACTS/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.raw.xz"

@@ -29,3 +29,13 @@ image_types:
         pt-usr:
           mountpoint: "/usr"
           compression: "xz"
+      files:
+        uki:
+          # TODO: the +3 here is from the boot counting, it's not very nice maybe we should write
+          # TODO: the first kernel *without* any boot counting if we can?
+          path: "/boot/EFI/Linux/{{ .Distro.ImageID }}_{{ .Distro.ImageVersion }}+3.efi"
+          # TODO: this only applies to the name inside the pipelines and it still gets renamed
+          # TODO: afterwards to the output-name template, however we need to work around this
+          # TODO: because without this we get really funky output names if multiple dots are in
+          # TODO: the `path` for the source file
+          filename: "uki.efi"

@@ -7,12 +7,13 @@ REPO := $(PWD)/data/repo
 
 .PHONY: build
 build:
-	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus,image-id=teamsbc-$(TYPE),image-version=$(IMAGE_VERSION) ./image-builder \
+	@sudo IMAGE_BUILDER_EXPERIMENTAL=yamlplus,image-id=teamsbc-$(TYPE),image-version=$(IMAGE_VERSION) image-builder \
 		--force-repo-dir=$(REPO) \
 		--force-defs-dir=$(DEFS) \
 		build \
 		--distro teamsbc-$(VERSION) $(TYPE) \
-		$(if $(filter makalu%,$(TYPE)),--with-extra partition:pt-usr)
+		$(if $(filter makalu%,$(TYPE)),--with-extra partition:pt-usr) \
+		$(if $(filter makalu%,$(TYPE)),--with-extra file:uki) \
 
 .PHONY: manifest
 manifest:
