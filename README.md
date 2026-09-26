@@ -17,13 +17,13 @@ Direct links to the latest builds of TeamSBC artifacts. Grouped by the Fedora ve
 
 #### x86_64
 
-- [lhotse-virt](https://artifacts.teamsbc.net/main/latest/46/x86_64/teamsbc-46-lhotse-virt-x86_64.raw.xz)
+- [lhotse-virt](https://artifacts.teamsbc.net/main/46/x86_64/teamsbc-lhotse-virt/index.html)
 
 #### aarch64
 
-- [lhotse-virt](https://artifacts.teamsbc.net/main/latest/46/aarch64/teamsbc-46-lhotse-virt-aarch64.raw.xz)
-- [lhotse-rpi4](https://artifacts.teamsbc.net/main/latest/46/aarch64/teamsbc-46-lhotse-rpi4-aarch64.raw.xz)
-- [lhotse-rpi5](https://artifacts.teamsbc.net/main/latest/46/aarch64/teamsbc-46-lhotse-rpi5-aarch64.raw.xz)
+- [lhotse-virt](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-lhotse-virt/index.html)
+- [lhotse-rpi4](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-lhotse-rpi4/index.html)
+- [lhotse-rpi5](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-lhotse-rpi5/index.html)
 
 ## Building
 
