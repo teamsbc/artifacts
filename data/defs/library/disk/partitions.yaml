@@ -9,12 +9,18 @@ esp: &esp
     label: "ESP"
 
 usr: &usr
-  size: "4 GiB"
+  size: "2 GiB"
   payload_type: "filesystem"
   payload:
     type: "ext4"
     label: "usr"
     mountpoint: "/usr"
+
+usr-empty: &usr-empty
+  size: "2 GiB"
+  label: "_empty"
+  attrs:
+    - 63  # no-auto: reserve this slot for sysupdate without mounting it
 
 root: &root
   size: "6 GiB"
