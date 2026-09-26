@@ -28,7 +28,7 @@ jobs:
       - name: "Setup"
         env:
           LATEST: /artifacts/${{ github.ref_name }}/latest/${{ matrix.version }}/${{ matrix.build.arch }}/
-          UPDATES: /updates/${{ github.ref_name }}/${{ matrix.version }}/${{ matrix.build.arch }}/${{ matrix.build.type }}/
+          UPDATES: /updates/${{ github.ref_name }}/${{ matrix.version }}/${{ matrix.build.arch }}/teamsbc-${{ matrix.build.type }}/
         run: |
           IMAGE_VERSION="${{ matrix.version }}.$(date +%Y%m%d).0"
           DATED=/artifacts/${{ github.ref_name }}/$(date +%Y.%m.%d)/${{ matrix.version }}/${{ matrix.build.arch }}/
