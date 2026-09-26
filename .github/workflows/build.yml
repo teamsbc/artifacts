@@ -69,8 +69,8 @@ jobs:
       - name: "Copy update metadata"
         if: startsWith(matrix.build.type, 'makalu')
         run: |
-          sudo mkdir -p "$UPDATES/meta/$IMAGE_VERSION"
-          sudo cp -a "$ARTIFACTS/meta/." "$UPDATES/meta/$IMAGE_VERSION/"
+          sudo mkdir -p "$UPDATES/meta"
+          sudo cp -a "$ARTIFACTS/meta/." "$UPDATES/meta/"
       - name: "Generate checksums"
         run: |
           sudo find $ARTIFACTS -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
