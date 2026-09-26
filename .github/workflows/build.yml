@@ -65,7 +65,7 @@ jobs:
           sudo mv $ARTIFACTS/*.raw.xz "$ARTIFACTS/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.raw.xz"
       - name: "Move metadata"
         run: |
-          sudo mv $ARTIFACTS/*.json $ARTIFACTS/meta/
+          sudo mv $ARTIFACTS/*.json "$ARTIFACTS/meta/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.json"
       - name: "Copy update metadata"
         if: startsWith(matrix.build.type, 'makalu')
         run: |
