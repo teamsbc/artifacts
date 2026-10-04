@@ -1,6 +1,7 @@
 VERSION       := 46
 TYPE          := makalu-virt
-IMAGE_VERSION := $(VERSION).$(shell date +%Y%m%d).0
+DATE          := $(shell date +%Y%m%d).0
+IMAGE_VERSION := $(VERSION).$(DATE)
 
 DEFS := $(PWD)/data/defs
 REPO := $(PWD)/data/repo
