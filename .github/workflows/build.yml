@@ -8,6 +8,8 @@ on:
     branches:
       - main
   workflow_dispatch:
+  schedule:
+    - cron: '20 4 * * *'
 
 jobs:
   build-artifacts:
@@ -40,7 +42,53 @@ jobs:
       - name: "Fix podman crun resolution"
         run: |
           ( echo '[engine.runtimes]' ; echo 'crun = [ "/usr/local/bin/crun" ]' ) | sudo tee /etc/containers/containers.conf
+      - name: "Check sources"
+        id: check-sources
+        if: github.event_name == 'schedule'
+        shell: bash
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT }}
+          METADATA_PREFIX: ${{ github.ref_name }}/${{ matrix.version }}/${{ matrix.build.arch }}/teamsbc-${{ matrix.build.type }}/meta/
+        run: |
+          aws s3api list-objects-v2 \
+            --bucket teamsbc-artifacts \
+            --prefix "$METADATA_PREFIX" \
+            --output json > "$RUNNER_TEMP/manifest-objects.json"
+          latest=$(jq -r '.Contents[]? | .Key | select(endswith(".json"))' \
+            "$RUNNER_TEMP/manifest-objects.json" | sort -V | tail -n 1)
+          if [ -z "$latest" ]; then
+            echo "No published manifest; building."
+            exit 0
+          fi
+          aws s3 cp "s3://teamsbc-artifacts/$latest" \
+            "$RUNNER_TEMP/published-manifest.json" --no-progress
+          {
+            sudo podman run --rm --privileged \
+              -v ./data:/data:Z \
+              -e "IMAGE_BUILDER_EXPERIMENTAL=yamlplus,yamldir=/data/defs,image-id=teamsbc-${{ matrix.build.type }},image-version=$IMAGE_VERSION" \
+              ghcr.io/osbuild/image-builder:latest \
+                --force-repo-dir=/data/repo \
+                manifest \
+                --distro teamsbc-${{ matrix.version }} \
+                --arch ${{ matrix.build.arch }} \
+                ${{ matrix.build.type }}
+          } > "$RUNNER_TEMP/current-manifest.json"
+          # Ignore pipeline UUIDs and IMAGE_VERSION; compare only fetched inputs.
+          sources_checksum() {
+            jq -ceS '.sources | select(type == "object")' "$1" | sha256sum | cut -d ' ' -f 1
+          }
+          published=$(sources_checksum "$RUNNER_TEMP/published-manifest.json")
+          current=$(sources_checksum "$RUNNER_TEMP/current-manifest.json")
+          if [ "$published" = "$current" ]; then
+            echo "Sources match $latest; skipping build and publication."
+            echo "unchanged=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Sources changed; building."
+          fi
       - name: "Build"
+        if: steps.check-sources.outputs.unchanged != 'true'
         run: |
           sudo podman run --rm --privileged \
           -v $ARTIFACTS:/output:Z \
@@ -57,26 +105,30 @@ jobs:
             ${{ matrix.build.type }}
           ls -larth $ARTIFACTS
       - name: "Move extras"
-        if: startsWith(matrix.build.type, 'makalu')
+        if: steps.check-sources.outputs.unchanged != 'true' && startsWith(matrix.build.type, 'makalu')
         run: |
           sudo mv $ARTIFACTS/*pt-usr*.raw.xz "$UPDATES/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.usr.raw.xz"
           sudo mv $ARTIFACTS/*uki*.efi "$UPDATES/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.efi"
       - name: "Rename artifact"
+        if: steps.check-sources.outputs.unchanged != 'true'
         run: |
           sudo mv $ARTIFACTS/*.raw.xz "$ARTIFACTS/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.raw.xz"
       - name: "Move metadata"
+        if: steps.check-sources.outputs.unchanged != 'true'
         run: |
           sudo mv $ARTIFACTS/*.json "$ARTIFACTS/meta/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.json"
       - name: "Copy update metadata"
-        if: startsWith(matrix.build.type, 'makalu')
+        if: steps.check-sources.outputs.unchanged != 'true' && startsWith(matrix.build.type, 'makalu')
         run: |
           sudo mkdir -p "$UPDATES/meta"
           sudo cp -a "$ARTIFACTS/meta/." "$UPDATES/meta/"
       - name: "Generate checksums"
+        if: steps.check-sources.outputs.unchanged != 'true'
         run: |
           sudo find $ARTIFACTS -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
           sudo find $UPDATES -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
       - name: "Upload"
+        if: steps.check-sources.outputs.unchanged != 'true'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
@@ -86,7 +138,7 @@ jobs:
             "s3://teamsbc-artifacts/" \
             --no-progress
       - name: "Upload updates"
-        if: startsWith(matrix.build.type, 'makalu')
+        if: steps.check-sources.outputs.unchanged != 'true' && startsWith(matrix.build.type, 'makalu')
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
