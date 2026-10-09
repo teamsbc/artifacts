@@ -6,9 +6,7 @@ core: &core
     - "systemd-networkd"
     - "systemd-networkd-defaults"
     - "dbus"
-    - "fwupd-efi"
     - "libxkbcommon"
-    - "linux-firmware"
     - "teamsbc-selinux"
   exclude:
     - "NetworkManager"
@@ -18,6 +16,9 @@ core: &core
     - "plymouth"
     - "kmscon"
     - "sudo"
+    - "parted"
+    - "hostname"
+    - "openssh-clients"
 
 lhotse: &lhotse
   include:
@@ -44,6 +45,12 @@ makalu: &makalu
     - "dnf5"
     - "dnf5-plugins"
     - "rpm"
+    - "man-db"
+
+hardware: &hardware
+  include:
+    - "fwupd-efi"
+    - "linux-firmware"
 
 wifi: &wifi
   include:
