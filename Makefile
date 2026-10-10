@@ -13,8 +13,7 @@ build:
 		--force-defs-dir=$(DEFS) \
 		build \
 		--distro teamsbc-$(VERSION) $(TYPE) \
-		$(if $(filter makalu%,$(TYPE)),--with-extra partition:pt-usr) \
-		$(if $(filter makalu%,$(TYPE)),--with-extra file:uki) \
+		$(if $(filter makalu%,$(TYPE)),--with-extra '*')
 
 .PHONY: manifest
 manifest:
