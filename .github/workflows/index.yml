@@ -16,6 +16,7 @@ jobs:
         bucket:
           - teamsbc-artifacts
           - teamsbc-updates
+          - teamsbc-extensions
     steps:
       - name: "Checkout Code"
         uses: actions/checkout@v6

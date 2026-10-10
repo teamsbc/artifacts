@@ -1,0 +1,8 @@
+makalu: &makalu
+  se-tmux:
+    exclude_paths:
+      - "/usr/share/doc"
+      - "/usr/lib/sysimage"
+    package_sets:
+      - include:
+          - "tmux"

@@ -43,3 +43,4 @@ image_types:
           # TODO: because without this we get really funky output names if multiple dots are in
           # TODO: the `path` for the source file
           filename: "uki.efi"
+      sysexts: !xref "library/sysexts.yaml#makalu"

@@ -31,12 +31,15 @@ jobs:
         env:
           ARTIFACTS: /artifacts/${{ github.ref_name }}/${{ matrix.version }}/${{ matrix.build.arch }}/teamsbc-${{ matrix.build.type }}/
           UPDATES: /updates/${{ github.ref_name }}/${{ matrix.version }}/${{ matrix.build.arch }}/teamsbc-${{ matrix.build.type }}/
+          EXTENSIONS: /extensions/${{ github.ref_name }}/${{ matrix.version }}/${{ matrix.build.arch }}/teamsbc-${{ matrix.build.type }}/
         run: |
           IMAGE_VERSION="${{ matrix.version }}.$(date +%Y%m%d).0"
           sudo mkdir -p "$ARTIFACTS/meta"
           sudo mkdir -p $UPDATES
+          sudo mkdir -p "$EXTENSIONS"
           echo "ARTIFACTS=$ARTIFACTS" >> $GITHUB_ENV
           echo "UPDATES=$UPDATES" >> $GITHUB_ENV
+          echo "EXTENSIONS=$EXTENSIONS" >> $GITHUB_ENV
           echo "IMAGE_VERSION=$IMAGE_VERSION" >> $GITHUB_ENV
       # Workaround: https://github.com/actions/runner-images/issues/14473
       - name: "Fix podman crun resolution"
@@ -101,7 +104,7 @@ jobs:
             --output-dir /output \
             --distro teamsbc-${{ matrix.version }} \
             --with-manifest \
-            ${{ startsWith(matrix.build.type, 'makalu') && '--with-extra partition:pt-usr --with-extra file:uki' || '' }} \
+            ${{ startsWith(matrix.build.type, 'makalu') && '--with-extra "*"' || '' }} \
             ${{ matrix.build.type }}
           ls -larth $ARTIFACTS
       - name: "Move extras"
@@ -109,6 +112,20 @@ jobs:
         run: |
           sudo mv $ARTIFACTS/*pt-usr*.raw.xz "$UPDATES/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.usr.raw.xz"
           sudo mv $ARTIFACTS/*uki*.efi "$UPDATES/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.efi"
+      - name: "Move extensions"
+        id: move-extensions
+        if: steps.check-sources.outputs.unchanged != 'true' && startsWith(matrix.build.type, 'makalu')
+        shell: bash
+        run: |
+          shopt -s nullglob
+          for file in "$ARTIFACTS"/*.erofs; do
+            extension=${file##*/}
+            extension=${extension#teamsbc-${{ matrix.version }}-${{ matrix.build.type }}-}
+            extension=${extension%-${{ matrix.build.arch }}.erofs}
+            extension=${extension#se-}
+            sudo mv "$file" "$EXTENSIONS/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.$extension.sysext.erofs"
+            echo "moved=true" >> "$GITHUB_OUTPUT"
+          done
       - name: "Rename artifact"
         if: steps.check-sources.outputs.unchanged != 'true'
         run: |
@@ -122,12 +139,18 @@ jobs:
         run: |
           sudo mkdir -p "$UPDATES/meta"
           sudo cp -a "$ARTIFACTS/meta/." "$UPDATES/meta/"
+      - name: "Copy extension metadata"
+        if: steps.check-sources.outputs.unchanged != 'true' && steps.move-extensions.outputs.moved == 'true'
+        run: |
+          sudo mkdir -p "$EXTENSIONS/meta"
+          sudo cp -a "$ARTIFACTS/meta/." "$EXTENSIONS/meta/"
       - name: "Generate checksums"
         if: steps.check-sources.outputs.unchanged != 'true'
         run: |
           sudo find $ARTIFACTS -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
           sudo find $UPDATES -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
-      - name: "Upload"
+          sudo find "$EXTENSIONS" -type f ! -name '*.sha256' -exec sh -c 'sha256sum "$1" | awk "{print \$1}" > "$1.sha256"' _ {} \;
+      - name: "Upload disks"
         if: steps.check-sources.outputs.unchanged != 'true'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
@@ -146,4 +169,14 @@ jobs:
         run: |
           aws s3 cp --recursive /updates \
             "s3://teamsbc-updates/" \
+            --no-progress
+      - name: "Upload extensions"
+        if: steps.check-sources.outputs.unchanged != 'true' && steps.move-extensions.outputs.moved == 'true'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT }}
+        run: |
+          aws s3 cp --recursive /extensions \
+            "s3://teamsbc-extensions/" \
             --no-progress
