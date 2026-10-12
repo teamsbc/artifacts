@@ -20,9 +20,11 @@ jobs:
           - { type: lhotse-virt, arch: x86_64 }
           - { type: makalu-virt, arch: x86_64 }
           - { type: lhotse-virt, arch: aarch64 }
+          - { type: makalu-virt, arch: aarch64 }
           - { type: lhotse-rpi4, arch: aarch64 }
           - { type: lhotse-rpi5, arch: aarch64 }
           - { type: makalu-rpi4, arch: aarch64 }
+          - { type: makalu-rpi5, arch: aarch64 }
     runs-on: ${{ matrix.build.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     steps:
       - name: "Checkout Code"

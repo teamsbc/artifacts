@@ -11,3 +11,33 @@ image_types:
         - !xref "library/packages.yaml#hardware"
         - !xref "library/packages.yaml#lhotse"
         - !xref "library/packages.yaml#wifi"
+
+  "makalu-rpi5":
+    <<: !xref "library/defaults/disk.yaml#lhotse"
+    partition_table: !xref "library/disk/tables.yaml#makalu"
+    required_partition_sizes:
+      "/": "2 GiB"
+      "/usr": "2 GiB"
+    platforms:
+      - !xref "library/platforms.yaml#aarch64_uefi_rpi5"
+    package_sets:
+      os:
+        - !xref "library/packages.yaml#core"
+        - !xref "library/packages.yaml#hardware"
+        - !xref "library/packages.yaml#makalu"
+        - !xref "library/packages.yaml#wifi"
+    extras:
+      partitions:
+        pt-usr:
+          mountpoint: "/usr"
+          compression: "xz"
+      files:
+        uki:
+          # TODO: the +3 here is from the boot counting, it's not very nice maybe we should write
+          # TODO: the first kernel *without* any boot counting if we can?
+          path: "/boot/EFI/Linux/{{ .Distro.ImageID }}_{{ .Distro.ImageVersion }}+3.efi"
+          # TODO: this only applies to the name inside the pipelines and it still gets renamed
+          # TODO: afterwards to the output-name template, however we need to work around this
+          # TODO: because without this we get really funky output names if multiple dots are in
+          # TODO: the `path` for the source file
+          filename: "uki.efi"
