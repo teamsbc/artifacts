@@ -5,15 +5,24 @@ on:
     paths:
       - data/**
       - .github/workflows/build.yml
+      - .github/scripts/**
     branches:
       - main
   workflow_dispatch:
   schedule:
     - cron: '20 4 * * *'
 
+# Keep uploads, cleanup, and indexing within one serialized pipeline. Cleanup
+# scans all buckets, so the lock must also cover builds from other branches.
+concurrency:
+  group: artifacts-publication
+  cancel-in-progress: false
+
 jobs:
   build-artifacts:
+    name: Build Artifacts
     strategy:
+      fail-fast: false
       matrix:
         version: [46]
         build:
@@ -181,4 +190,67 @@ jobs:
         run: |
           aws s3 cp --recursive /extensions \
             "s3://teamsbc-extensions/" \
+            --no-progress
+
+  cleanup:
+    name: Cleanup Artifacts
+    needs: build-artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Code"
+        uses: actions/checkout@v6
+      - name: "Test retention selection"
+        run: python3 -m unittest discover -s .github/scripts/tests -v
+      - name: "Keep the 3 most recent versions per artifact type"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT }}
+        run: python3 .github/scripts/cleanup_artifacts.py --keep 3 --apply
+
+  generate-index:
+    name: Generate Indexes
+    needs: cleanup
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        bucket:
+          - teamsbc-artifacts
+          - teamsbc-updates
+          - teamsbc-extensions
+    steps:
+      - name: "Checkout Code"
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+      - name: "Create"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT }}
+        run: |
+          go run github.com/teamsbc/s3-directory-listing/cmd/s3-directory-listing@latest create \
+            ${{ matrix.bucket }} \
+            s3-index-template/default.html \
+            -o /tmp/output \
+            --sha256sums
+      - name: "Sign"
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        run: |
+          gpg --batch --import <<<"$GPG_PRIVATE_KEY"
+          find /tmp/output -name SHA256SUMS -exec sh -c '
+            gpg --batch --detach-sign -o "$1.sig" "$1"
+            gpg --batch --detach-sign --armor -o "$1.asc" "$1"
+            cp "$1.sig" "$1.gpg"
+          ' _ {} \;
+      - name: "Upload"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT }}
+        run: |
+          aws s3 cp --recursive /tmp/output \
+            "s3://${{ matrix.bucket }}/" \
             --no-progress
