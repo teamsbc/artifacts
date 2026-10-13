@@ -25,9 +25,14 @@ PAYLOADS = {
 
 
 def aws_json(*args):
-    return json.loads(subprocess.check_output([
+    output = subprocess.check_output([
         "aws", "s3api", *args, "--output", "json", "--no-cli-pager",
-    ]))
+    ])
+    # A successful quiet DeleteObjects response can produce no CLI output.
+    # Listings must still return valid JSON before any deletion is attempted.
+    if args[0] == "delete-objects" and not output.strip():
+        return {}
+    return json.loads(output)
 
 
 def list_keys(bucket):

@@ -105,6 +105,47 @@ class RetentionTests(unittest.TestCase):
 
 class StorageTests(unittest.TestCase):
     @patch.object(cleanup.subprocess, "check_output")
+    def test_quiet_delete_accepts_empty_success_output_and_continues_batches(self, check_output):
+        for output in (b"", b" \n"):
+            with self.subTest(output=output):
+                check_output.reset_mock()
+                check_output.return_value = output
+                cleanup.delete_keys("teamsbc-artifacts", [f"key-{i}" for i in range(1001)])
+                self.assertEqual(check_output.call_count, 2)
+                self.assertTrue(all(call.args[0][2] == "delete-objects"
+                                    for call in check_output.call_args_list))
+
+    @patch.object(cleanup.subprocess, "check_output")
+    def test_invalid_listing_output_prevents_deletion(self, check_output):
+        keys = [key for day in range(1, 5)
+                for key in build_keys("teamsbc-artifacts", f"46.202610{day:02d}.0")]
+        listing = json.dumps({"Contents": [{"Key": key} for key in keys]}).encode()
+        for output in (b"", b" \n", b"not-json"):
+            with self.subTest(output=output):
+                check_output.reset_mock()
+                check_output.side_effect = [listing, output]
+                with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(json.JSONDecodeError):
+                    cleanup.cleanup(cleanup.BUCKETS, apply=True)
+                self.assertEqual(check_output.call_count, 2)
+                self.assertTrue(all(call.args[0][2] == "list-objects-v2"
+                                    for call in check_output.call_args_list))
+
+    @patch.object(cleanup.subprocess, "check_output")
+    def test_delete_still_rejects_malformed_json_and_per_object_errors(self, check_output):
+        check_output.return_value = b"not-json"
+        with self.assertRaises(json.JSONDecodeError):
+            cleanup.delete_keys("teamsbc-artifacts", ["old"])
+        check_output.return_value = b'{"Errors": [{"Key": "old", "Code": "AccessDenied"}]}'
+        with self.assertRaisesRegex(RuntimeError, "AccessDenied"):
+            cleanup.delete_keys("teamsbc-artifacts", ["old"])
+
+    @patch.object(cleanup.subprocess, "check_output",
+                  side_effect=subprocess.CalledProcessError(1, "aws", output=b""))
+    def test_delete_nonzero_exit_is_not_treated_as_empty_success(self, check_output):
+        with self.assertRaises(subprocess.CalledProcessError):
+            cleanup.delete_keys("teamsbc-artifacts", ["old"])
+
+    @patch.object(cleanup.subprocess, "check_output")
     def test_listing_uses_cli_pagination_and_handles_empty_buckets(self, check_output):
         keys = [f"key-{i}" for i in range(1100)]
         check_output.return_value = json.dumps({"Contents": [{"Key": key} for key in keys]}).encode()
