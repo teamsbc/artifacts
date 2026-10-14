@@ -133,7 +133,6 @@ jobs:
             extension=${file##*/}
             extension=${extension#teamsbc-${{ matrix.version }}-${{ matrix.build.type }}-}
             extension=${extension%-${{ matrix.build.arch }}.erofs}
-            extension=${extension#se-}
             sudo mv "$file" "$EXTENSIONS/teamsbc-${{ matrix.build.type }}-$IMAGE_VERSION.$extension.sysext.erofs"
             echo "moved=true" >> "$GITHUB_OUTPUT"
           done

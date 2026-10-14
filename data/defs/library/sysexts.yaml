@@ -1,5 +1,5 @@
 makalu: &makalu
-  se-tmux:
+  tmux:
     exclude_paths:
       - "/usr/share/doc"
       - "/usr/lib/sysimage"
