@@ -58,12 +58,12 @@ jobs:
           ( echo '[engine.runtimes]' ; echo 'crun = [ "/usr/local/bin/crun" ]' ) | sudo tee /etc/containers/containers.conf
       - name: "Check sources"
         id: check-sources
-        if: github.event_name == 'schedule'
         shell: bash
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT }}
+          EVENT_NAME: ${{ github.event_name }}
           METADATA_PREFIX: ${{ github.ref_name }}/${{ matrix.version }}/${{ matrix.build.arch }}/teamsbc-${{ matrix.build.type }}/meta/
         run: |
           aws s3api list-objects-v2 \
@@ -89,6 +89,20 @@ jobs:
                 --arch ${{ matrix.build.arch }} \
                 ${{ matrix.build.type }}
           } > "$RUNNER_TEMP/current-manifest.json"
+          echo "Comparing sources with $latest"
+          echo "::group::Source differences (- published, + current)"
+          python3 .github/scripts/source_diff.py \
+            "$RUNNER_TEMP/published-manifest.json" \
+            "$RUNNER_TEMP/current-manifest.json" \
+            | tee "$RUNNER_TEMP/source-diff.txt"
+          echo "::endgroup::"
+          {
+            echo '### Source differences'
+            echo "Baseline: \`$latest\`"
+            echo '```diff'
+            cat "$RUNNER_TEMP/source-diff.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
           # Ignore pipeline UUIDs and IMAGE_VERSION; compare only fetched inputs.
           sources_checksum() {
             jq -ceS '.sources | select(type == "object")' "$1" | sha256sum | cut -d ' ' -f 1
@@ -96,8 +110,12 @@ jobs:
           published=$(sources_checksum "$RUNNER_TEMP/published-manifest.json")
           current=$(sources_checksum "$RUNNER_TEMP/current-manifest.json")
           if [ "$published" = "$current" ]; then
-            echo "Sources match $latest; skipping build and publication."
-            echo "unchanged=true" >> "$GITHUB_OUTPUT"
+            if [ "$EVENT_NAME" = schedule ]; then
+              echo "Sources match $latest; skipping build and publication."
+              echo "unchanged=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "Sources match $latest; building for $EVENT_NAME."
+            fi
           else
             echo "Sources changed; building."
           fi
