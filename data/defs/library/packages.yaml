@@ -8,6 +8,8 @@ core: &core
     - "dbus"
     - "libxkbcommon"
     - "teamsbc-selinux"
+    - "nftables"
+    - "nftables-services"
   exclude:
     - "NetworkManager"
     - "sssd*"
