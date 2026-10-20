@@ -146,16 +146,13 @@ aarch64_uefi_rpi5: &aarch64_uefi_rpi5
       from_build: true
     # and dtbs
     - src: "/boot/efi/bcm2712-d-rpi-5-b.dtb"
-      dst: "/boot/bcm2712-d-5-b.dtb"
+      dst: "/boot/bcm2712-d-rpi-5-b.dtb"
       from_build: true
     - src: "/boot/efi/bcm2712-rpi-5-b.dtb"
-      dst: "/boot/bcm2712-5-b.dtb"
-      from_build: true
-    - src: "/boot/efi/bcm2712d0-rpi-5-b.dtb"
-      dst: "/boot/bcm2712d0-5-b.dtb"
+      dst: "/boot/bcm2712-rpi-5-b.dtb"
       from_build: true
     - src: "/boot/efi/bcm2712-rpi-500.dtb"
-      dst: "/boot/bcm2712-500.dtb"
+      dst: "/boot/bcm2712-rpi-500.dtb"
       from_build: true
     - src: "/boot/efi/bcm2712-rpi-cm5-cm4io.dtb"
       dst: "/boot/bcm2712-rpi-cm5-cm4io.dtb"
