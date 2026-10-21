@@ -144,13 +144,12 @@ aarch64_uefi_rpi5: &aarch64_uefi_rpi5
     - src: "/boot/efi/start4x.elf"
       dst: "/boot/start4x.elf"
       from_build: true
-    # and dtbs
-    - src: "/boot/efi/bcm2712-d-rpi-5-b.dtb"
+    # Use the target kernel DTBs for Pi 5 Model B upstream RP1 bindings.
+    - src: "/usr/lib/modules/{{ .KernelVersion }}/dtb/broadcom/bcm2712-d-rpi-5-b.dtb"
       dst: "/boot/bcm2712-d-rpi-5-b.dtb"
-      from_build: true
-    - src: "/boot/efi/bcm2712-rpi-5-b.dtb"
+    - src: "/usr/lib/modules/{{ .KernelVersion }}/dtb/broadcom/bcm2712-rpi-5-b.dtb"
       dst: "/boot/bcm2712-rpi-5-b.dtb"
-      from_build: true
+    # Other board models retain their firmware-provided DTBs.
     - src: "/boot/efi/bcm2712-rpi-500.dtb"
       dst: "/boot/bcm2712-rpi-500.dtb"
       from_build: true
