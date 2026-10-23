@@ -6,3 +6,17 @@ makalu: &makalu
     package_sets:
       - include:
           - "tmux"
+  screen:
+    exclude_paths:
+      - "/usr/share/doc"
+      - "/usr/lib/sysimage"
+    package_sets:
+      - include:
+          - "screen"
+  weechat:
+    exclude_paths:
+      - "/usr/share/doc"
+      - "/usr/lib/sysimage"
+    package_sets:
+      - include:
+          - "weechat"
