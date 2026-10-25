@@ -20,3 +20,17 @@ makalu: &makalu
     package_sets:
       - include:
           - "weechat"
+  pciutils:
+    exclude_paths:
+      - "/usr/share/doc"
+      - "/usr/lib/sysimage"
+    package_sets:
+      - include:
+          - "pciutils"
+  usbutils:
+    exclude_paths:
+      - "/usr/share/doc"
+      - "/usr/lib/sysimage"
+    package_sets:
+      - include:
+          - "usbutils"
