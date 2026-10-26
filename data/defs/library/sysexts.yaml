@@ -34,3 +34,17 @@ makalu: &makalu
     package_sets:
       - include:
           - "usbutils"
+  lsof:
+    exclude_paths:
+      - "/usr/share/doc"
+      - "/usr/lib/sysimage"
+    package_sets:
+      - include:
+          - "lsof"
+  strace:
+    exclude_paths:
+      - "/usr/share/doc"
+      - "/usr/lib/sysimage"
+    package_sets:
+      - include:
+          - "strace"
