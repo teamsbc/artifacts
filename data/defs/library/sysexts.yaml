@@ -48,3 +48,10 @@ makalu: &makalu
     package_sets:
       - include:
           - "strace"
+  mosquitto:
+    exclude_paths:
+      - "/usr/share/doc"
+      - "/usr/lib/sysimage"
+    package_sets:
+      - include:
+          - "mosquitto"
