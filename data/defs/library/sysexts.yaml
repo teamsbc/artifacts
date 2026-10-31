@@ -34,6 +34,13 @@ makalu: &makalu
     package_sets:
       - include:
           - "usbutils"
+  lm_sensors:
+    exclude_paths:
+      - "/usr/share/doc"
+      - "/usr/lib/sysimage"
+    package_sets:
+      - include:
+          - "lm_sensors"
   lsof:
     exclude_paths:
       - "/usr/share/doc"
