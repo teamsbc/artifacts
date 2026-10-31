@@ -55,3 +55,17 @@ makalu: &makalu
     package_sets:
       - include:
           - "mosquitto"
+  copyparty:
+    exclude_paths:
+      - "/usr/share/doc"
+      - "/usr/lib/sysimage"
+    package_sets:
+      - include:
+          - "copyparty"
+  haproxy:
+    exclude_paths:
+      - "/usr/share/doc"
+      - "/usr/lib/sysimage"
+    package_sets:
+      - include:
+          - "haproxy"
