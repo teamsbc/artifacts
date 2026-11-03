@@ -34,7 +34,8 @@ jobs:
           - { type: lhotse-rpi5, arch: aarch64 }
           - { type: makalu-rpi4, arch: aarch64 }
           - { type: makalu-rpi5, arch: aarch64 }
-    runs-on: ${{ matrix.build.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    # osbuild's RPM stage fails to mount /dev on the Ubuntu 26.04 x86 runner.
+    runs-on: ${{ matrix.build.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
     steps:
       - name: "Checkout Code"
         uses: actions/checkout@v6
