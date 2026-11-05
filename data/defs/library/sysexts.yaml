@@ -1,176 +1,126 @@
 makalu: &makalu
   tmux:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "tmux"
   screen:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "screen"
   weechat:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "weechat"
   pciutils:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "pciutils"
   usbutils:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "usbutils"
   lm-sensors:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "lm_sensors"
   lsof:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "lsof"
   strace:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "strace"
   mosquitto:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "mosquitto"
   copyparty:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "copyparty"
   haproxy:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "haproxy"
   jq:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "jq"
   tcpdump:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "tcpdump"
   htop:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "htop"
   iperf3:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "iperf3"
   ethtool:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "ethtool"
   smartmontools:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "smartmontools"
   nvme-cli:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "nvme-cli"
   bind-utils:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "bind-utils"
   ripgrep:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "ripgrep"
   nmap:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "nmap"
   fio:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "fio"
   i2c-tools:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "i2c-tools"
   bpftrace:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "bpftrace"
   i2c-display:
-    exclude_paths:
-      - "/usr/share/doc"
-      - "/usr/lib/sysimage"
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
     package_sets:
       - include:
           - "i2c-display"
