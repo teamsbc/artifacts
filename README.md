@@ -3,7 +3,7 @@
 
 # TeamSBC Definitions
 
-This repository contains the [image-builder](https://osbuild.org/docs/developer-guide/projects/image-builder/) definitions for the various TeamSBC artifacts. Artifacts are also built here through the use of GitHub actions.
+This repository contains the [image-builder](https://osbuild.org/docs/developer-guide/projects/image-builder/) definitions and GitHub Actions workflows for TeamSBC images, update payloads, and system extensions.
 
 ## Usage
 
@@ -11,34 +11,41 @@ For more information about how to use these artifacts and what they contain you 
 
 ## Downloads
 
-Direct links to the latest builds of TeamSBC artifacts. Grouped by the Fedora version they are based on, and architecture. Named by the TeamSBC variant. You can also [browse artifacts](https://artifacts.teamsbc.net/index.html) on our artifacts storage.
+Browse published images by Fedora version, architecture, and image type in the [artifact storage](https://artifacts.teamsbc.net/index.html).
 
 ### TeamSBC 46
 
 #### x86_64
 
 - [lhotse-virt](https://artifacts.teamsbc.net/main/46/x86_64/teamsbc-lhotse-virt/index.html)
+- [makalu-virt](https://artifacts.teamsbc.net/main/46/x86_64/teamsbc-makalu-virt/index.html)
 
 #### aarch64
 
 - [lhotse-virt](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-lhotse-virt/index.html)
 - [lhotse-rpi4](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-lhotse-rpi4/index.html)
 - [lhotse-rpi5](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-lhotse-rpi5/index.html)
+- [makalu-virt](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-makalu-virt/index.html)
+- [makalu-rpi4](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-makalu-rpi4/index.html)
+- [makalu-rpi5](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-makalu-rpi5/index.html)
+
+Makalu update payloads and system extensions are published separately in the [updates](https://updates.teamsbc.net/index.html) and [extensions](https://extensions.teamsbc.net/index.html) storage.
 
 ## Building
 
-You can build artifacts locally using the provided `Makefile` in this repository after you've installed the preqrequisites.
+The `Makefile` provides local and container-based image builds. The definitions are in `data/defs`, and the build-time package repositories are in `data/repo`.
 
 ### Prerequisites
 
-- `image-builder`
+- GNU Make and `sudo`
+- Podman for container builds, or a compatible `image-builder` installed locally for local builds
 
 ### Build
 
-```
-make build-in-container DISTRO=44 TYPE=lhotse-virt
+```sh
+make build-in-container VERSION=46 TYPE=lhotse-virt
 ```
 
-Will build a TeamSBC Remix, Fedora 44 based `lhotse-virt` artifact. Since TeamSBC often uses the latest features of `image-builder` there's a chance that they might not yet be in a released version hence the default suggestion here is to build with the upstream container.
+This builds a Fedora 46-based `lhotse-virt` image using the latest upstream image-builder container and writes the output to the current directory. The container runs with elevated privileges. TeamSBC often uses image-builder features that may not yet be available in a release.
 
-If you don't or can't use containers you can replace `build-in-container` with `build` and your locally installed `image-builder` version will be used.
+Use `make build VERSION=46 TYPE=lhotse-virt` to build with the locally installed image-builder. The local `build` target requests all extras for Makalu images, while `build-in-container` does not; the CI workflow requests them explicitly and publishes the `/usr` partition, UKI, and system extensions separately.
