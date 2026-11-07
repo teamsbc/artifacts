@@ -186,9 +186,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT }}
         run: |
-          aws s3 cp --recursive /artifacts \
-            "s3://teamsbc-artifacts/" \
-            --no-progress
+          bash .github/scripts/upload.sh /artifacts "s3://teamsbc-artifacts/"
       - name: "Upload updates"
         if: steps.check-sources.outputs.unchanged != 'true' && startsWith(matrix.build.type, 'makalu')
         env:
@@ -196,9 +194,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT }}
         run: |
-          aws s3 cp --recursive /updates \
-            "s3://teamsbc-updates/" \
-            --no-progress
+          bash .github/scripts/upload.sh /updates "s3://teamsbc-updates/"
       - name: "Upload extensions"
         if: steps.check-sources.outputs.unchanged != 'true' && steps.move-extensions.outputs.moved == 'true'
         env:
@@ -206,9 +202,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT }}
         run: |
-          aws s3 cp --recursive /extensions \
-            "s3://teamsbc-extensions/" \
-            --no-progress
+          bash .github/scripts/upload.sh /extensions "s3://teamsbc-extensions/"
 
   cleanup:
     name: Cleanup Artifacts
