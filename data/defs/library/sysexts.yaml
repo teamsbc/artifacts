@@ -124,3 +124,13 @@ makalu: &makalu
     package_sets:
       - include:
           - "i2c-display"
+  podman:
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
+    package_sets:
+      - include:
+          - "podman"
+  valkey:
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
+    package_sets:
+      - include:
+          - "valkey"
