@@ -4,24 +4,6 @@ shared: &shared
   start_offset: "1 MiB"
   absolute_start_offset: true
 
-virt: &virt
-  x86_64:
-    <<: *shared
-    type: "gpt"
-    partitions:
-      - !xref "library/disk/partitions.yaml#esp"
-      - <<: !xref "library/disk/partitions.yaml#root"
-        size: "2 GiB"
-        type: !xref "library/dps.yaml#root_x86_64"
-
-  aarch64:
-    <<: *shared
-    type: "gpt"
-    partitions:
-      - !xref "library/disk/partitions.yaml#esp"
-      - <<: !xref "library/disk/partitions.yaml#root"
-        type: !xref "library/dps.yaml#root_aarch64"
-
 makalu: &makalu
   x86_64:
     <<: *shared
@@ -47,14 +29,5 @@ makalu: &makalu
         label: "usr-{{.Distro.ImageVersion}}"
       - <<: !xref "library/disk/partitions.yaml#usr-empty"
         type: !xref "library/dps.yaml#usr_aarch64"
-      - <<: !xref "library/disk/partitions.yaml#root"
-        type: !xref "library/dps.yaml#root_aarch64"
-
-rpi: &rpi
-  aarch64:
-    <<: *shared
-    type: "gpt"
-    partitions:
-      - <<: !xref "library/disk/partitions.yaml#esp"
       - <<: !xref "library/disk/partitions.yaml#root"
         type: !xref "library/dps.yaml#root_aarch64"

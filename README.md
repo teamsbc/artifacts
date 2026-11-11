@@ -17,14 +17,10 @@ Browse published images by Fedora version, architecture, and image type in the [
 
 #### x86_64
 
-- [lhotse-virt](https://artifacts.teamsbc.net/main/46/x86_64/teamsbc-lhotse-virt/index.html)
 - [makalu-virt](https://artifacts.teamsbc.net/main/46/x86_64/teamsbc-makalu-virt/index.html)
 
 #### aarch64
 
-- [lhotse-virt](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-lhotse-virt/index.html)
-- [lhotse-rpi4](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-lhotse-rpi4/index.html)
-- [lhotse-rpi5](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-lhotse-rpi5/index.html)
 - [makalu-virt](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-makalu-virt/index.html)
 - [makalu-rpi4](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-makalu-rpi4/index.html)
 - [makalu-rpi5](https://artifacts.teamsbc.net/main/46/aarch64/teamsbc-makalu-rpi5/index.html)
@@ -43,9 +39,9 @@ The `Makefile` provides local and container-based image builds. The definitions 
 ### Build
 
 ```sh
-make build-in-container VERSION=46 TYPE=lhotse-virt
+make build-in-container VERSION=46 TYPE=makalu-virt
 ```
 
-This builds a Fedora 46-based `lhotse-virt` image using the latest upstream image-builder container and writes the output to the current directory. The container runs with elevated privileges. TeamSBC often uses image-builder features that may not yet be available in a release.
+This builds a Fedora 46-based `makalu-virt` image using the latest upstream image-builder container and writes the output to the current directory. The container runs with elevated privileges. TeamSBC often uses image-builder features that may not yet be available in a release.
 
-Use `make build VERSION=46 TYPE=lhotse-virt` to build with the locally installed image-builder. The local `build` target requests all extras for Makalu images, while `build-in-container` does not; the CI workflow requests them explicitly and publishes the `/usr` partition, UKI, and system extensions separately.
+Use `make build VERSION=46 TYPE=makalu-virt` to build with the locally installed image-builder. The CI workflow requests extras explicitly and publishes the `/usr` partition, UKI, and system extensions separately.

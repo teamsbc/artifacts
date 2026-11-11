@@ -22,11 +22,6 @@ core: &core
     - "hostname"
     - "openssh-clients"
 
-lhotse: &lhotse
-  include:
-    - "teamsbc-release-lhotse"
-    - "teamsbc-config-lhotse"
-
 makalu: &makalu
   include:
     - "teamsbc-release-makalu"

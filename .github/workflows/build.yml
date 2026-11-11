@@ -26,12 +26,8 @@ jobs:
       matrix:
         version: [46]
         build:
-          - { type: lhotse-virt, arch: x86_64 }
           - { type: makalu-virt, arch: x86_64 }
-          - { type: lhotse-virt, arch: aarch64 }
           - { type: makalu-virt, arch: aarch64 }
-          - { type: lhotse-rpi4, arch: aarch64 }
-          - { type: lhotse-rpi5, arch: aarch64 }
           - { type: makalu-rpi4, arch: aarch64 }
           - { type: makalu-rpi5, arch: aarch64 }
     # osbuild's RPM stage fails to mount /dev on the Ubuntu 26.04 x86 runner.
