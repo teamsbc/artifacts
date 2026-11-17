@@ -18,6 +18,10 @@ concurrency:
   group: artifacts-publication
   cancel-in-progress: false
 
+env:
+  AWS_REGION: auto
+  AWS_DEFAULT_REGION: auto
+
 jobs:
   build-artifacts:
     name: Build Artifacts
