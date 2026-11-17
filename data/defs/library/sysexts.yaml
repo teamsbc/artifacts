@@ -134,3 +134,8 @@ makalu: &makalu
     package_sets:
       - include:
           - "valkey"
+  cockpit:
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
+    package_sets:
+      - include:
+          - "cockpit"
