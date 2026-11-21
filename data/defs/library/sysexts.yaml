@@ -139,3 +139,43 @@ makalu: &makalu
     package_sets:
       - include:
           - "cockpit"
+  tar:
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
+    package_sets:
+      - include:
+          - "tar"
+  rsync:
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
+    package_sets:
+      - include:
+          - "rsync"
+  zip:
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
+    package_sets:
+      - include:
+          - "zip"
+  unzip:
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
+    package_sets:
+      - include:
+          - "unzip"
+  file:
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
+    package_sets:
+      - include:
+          - "file"
+  mtr:
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
+    package_sets:
+      - include:
+          - "mtr"
+  tree:
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
+    package_sets:
+      - include:
+          - "tree"
+  pv:
+    exclude_paths: !xref "library/sysext-excludes.yaml#common"
+    package_sets:
+      - include:
+          - "pv"
